@@ -1,5 +1,6 @@
 public class Seeds {
     private int type;
+    private String name;
     private int harvestTime;
     private int water;
     private int bonusWater;
@@ -12,6 +13,7 @@ public class Seeds {
 
     public Seeds() {
         type = 0;
+        name = "";
         harvestTime = 0;
         water = 0;
         bonusWater = 0;
@@ -36,6 +38,7 @@ public class Seeds {
     public void Generate(int x) {
         if (x == 1) {
             type = 1;
+            name = "Turnip (root crop";
             harvestTime = 2;
             water = 1;
             bonusWater = 2;
@@ -47,6 +50,7 @@ public class Seeds {
             expYield = 5;
         } else if (x == 2) {
             type = 2;
+            name = "Carrot";
             harvestTime = 3;
             water = 1;
             bonusWater = 2;
@@ -58,6 +62,7 @@ public class Seeds {
             expYield = 7.5;
         } else if (x == 3) {
             type = 3;
+            name = "Potato";
             harvestTime = 5;
             water = 3;
             bonusWater = 4;
@@ -69,6 +74,7 @@ public class Seeds {
             expYield = 12.5;
         } else if (x == 4) {
             type = 4;
+            name = "Rose";
             harvestTime = 1;
             water = 1;
             bonusWater = 2;
@@ -80,6 +86,7 @@ public class Seeds {
             expYield = 2.5;
         } else if (x == 5) {
             type = 5;
+            name = "Turnip (Flower)";
             harvestTime = 2;
             water = 2;
             bonusWater = 3;
@@ -91,6 +98,7 @@ public class Seeds {
             expYield = 5;
         } else if (x == 6) {
             type = 6;
+            name = "Sunflower";
             harvestTime = 3;
             water = 2;
             bonusWater = 3;
@@ -102,6 +110,7 @@ public class Seeds {
             expYield = 7.5;
         } else if (x == 7) {
             type = 7;
+            name = "Mango";
             harvestTime = 10;
             water = 7;
             bonusWater = 7;
@@ -113,6 +122,7 @@ public class Seeds {
             expYield = 25;
         } else if (x == 8) {
             type = 8;
+            name = "Apple";
             harvestTime = 10;
             water = 7;
             bonusWater = 7;
@@ -131,6 +141,14 @@ public class Seeds {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getHarvestTime() {
