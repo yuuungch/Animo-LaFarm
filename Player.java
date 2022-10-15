@@ -2,23 +2,24 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    private ArrayList<Integer> seeds; // Amount of seeds (and which seeds) player has
+    private ArrayList<Integer> seedInv; // Amount of seeds (and which seeds) player has
     private int Ocoins;
-    private int exp;
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
 
-    public Player() {
-        seeds.set(0, 0);
-        seeds.set(1, 0);
-        seeds.set(2, 0);
-        seeds.set(3, 0);
-        seeds.set(4, 0);
-        seeds.set(5, 0);
-        seeds.set(6, 0);
-        seeds.set(7, 0);
-        seeds.set(8, 0);
+    public Player(ArrayList<Integer> seedInv, Seeds seedData, Exp expData) {
+        this.seedInv = seedInv;
         Ocoins = 100;
+        this.seedData = seedData;
+        this.expData = expData;
+    }
+
+    public void CheckExpBonus() {
+        expData.CheckStatus();
+    }
+
+    public void CheckSeedInventory() {
+        System.out.println(seedInv);
     }
 
     public void BuyMenu() {
@@ -27,7 +28,7 @@ public class Player {
 
     public void BuySeeds() {
         Scanner input = new Scanner(System.in);
-        int choice, type, quantity;
+        int choice, type, prev, quantity;
 
         do {
             System.out.println("--Root Crops--");
@@ -53,9 +54,12 @@ public class Player {
                 System.out.print("How many would you like to buy? ");
                 quantity = input.nextInt();
                 if (Ocoins >= seedData.getCost() * quantity) {
-                    seeds.set(type, quantity); // tentative
-                    System.out.println("Purchase successful! You now have " + seeds.get(type) + "pieces of "
+                    prev = seedInv.get(type - 1);
+                    seedInv.set(type - 1, prev + quantity); // tentative
+                    System.out.println("Purchase successful! You now have " + seedInv.get(type - 1) + " pieces of "
                             + seedData.getName() + ".");
+                    Ocoins -= (seedData.getCost() * quantity);
+                    System.out.println("You now have " + Ocoins + " Objectcoins left.");
                 } else {
                     System.out.println("Sorry. You do not have enough Object Coins to purchase that many.");
                 }
@@ -84,12 +88,12 @@ public class Player {
         } while (choice < 0 && choice > 9);
     }
 
-    public ArrayList<Integer> getSeeds() {
-        return seeds;
+    public ArrayList<Integer> getSeedInv() {
+        return seedInv;
     }
 
-    public void setSeeds(ArrayList<Integer> seeds) {
-        this.seeds = seeds;
+    public void setSeedInv(ArrayList<Integer> seedInv) {
+        this.seedInv = seedInv;
     }
 
     public int getOcoins() {
@@ -98,6 +102,22 @@ public class Player {
 
     public void setOcoins(int ocoins) {
         Ocoins = ocoins;
+    }
+
+    public Seeds getSeedData() {
+        return seedData;
+    }
+
+    public void setSeedData(Seeds seedData) {
+        this.seedData = seedData;
+    }
+
+    public Exp getExpData() {
+        return expData;
+    }
+
+    public void setExpData(Exp expData) {
+        this.expData = expData;
     }
 
 }
