@@ -15,18 +15,24 @@ public class Farm {
     public void Menu() {
         Scanner input = new Scanner(System.in);
         ArrayList<Integer> Land = new ArrayList<Integer>();
-        int choice, c1;
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        int choice, c1, i;
 
-        Land.add(tile.getPlowState()); // set tile 1 with corresponding tile state
+        Land.add(0, tile.getPlowState()); // set tile 1 with corresponding tile state
 
-        System.out.println(Land); // debugging
+        for (i = 0; i < 8; i++) {
+            temp.add(i, 0);
+        }
+        player.setSeedInv(temp);
 
         do {
+            System.out.println("Land State: " + Land); // debugging
             System.out.println("[1] Plow Tile"); // in Tile class
             System.out.println("[2] Buy Seeds"); // in Player class
             System.out.println("[3] Plant Seed"); // in Tile class
             System.out.println("[4] Water Tile"); // in Tile class
             System.out.println("[5] Harvest Tile"); // in Tile class
+            System.out.println("[6] Check Player"); // in Player and Exp class
             System.out.println("[0] Advance Day"); // here in Farm class
 
             System.out.print("\nChoice: ");
@@ -37,21 +43,25 @@ public class Farm {
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
-                switch (Land.get(c1)) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        tile.Plow(Land, c1);
-                        break;
-                    default:
-                        System.out.println("Invalid Tile. Tile does not exist.");
-
+                if (Land.get(c1) == 0 || Land.get(c1) == 1 || Land.get(c1) == 2) {
+                    tile.Plow(Land, c1);
+                } else {
+                    System.out.println("Invalid. Tile does not exist");
                 }
+
             } else if (choice == 2) {
                 player.BuySeeds();
+            } else if (choice == 6) {
+                System.out.println("---------------------------------");
+
+                player.CheckSeedInventory();
+                System.out.println("Objectcoins Available: " + player.getOcoins());
+                System.out.println("---------------------------------");
+                player.CheckExpBonus();
             }
 
         } while (choice != 0);
+
     }
 
     public Tile getTile() {
