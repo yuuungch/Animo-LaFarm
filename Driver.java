@@ -7,8 +7,8 @@ public class Driver {
         Seeds seedData = new Seeds();
         Exp expData = new Exp();
         Player player = new Player(seedInv, seedData, expData);
-        Tile tile = new Tile();
-        Farm farm = new Farm(player, tile);
+        Tile tile = new Tile(0, 0, 0, 0, 0, 0);
+        Farm farm = new Farm(player, tile, seedData);
 
         //methods
         farm.Menu();

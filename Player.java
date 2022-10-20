@@ -90,7 +90,7 @@ public class Player {
 
     //plant seed (minus 1 on seed inventory)
     public void PlantSeed (int seed) {
-        seedInv.set(seed, -1); // change thissss
+        seedInv.set(seed, seedInv.get(seed)-1); // change thissss
         System.out.println("You now have planted " + seedData.getName() + ".");
     }
 
