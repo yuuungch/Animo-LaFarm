@@ -7,11 +7,19 @@ public class Player {
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
 
-    public Player(ArrayList<Integer> seedInv, Seeds seedData, Exp expData) {
-        this.seedInv = seedInv;
+    public Player() {
+        seedInv = new ArrayList<Integer>(8);
         Ocoins = 100;
-        this.seedData = seedData;
-        this.expData = expData;
+        seedData = new Seeds();
+        expData = new Exp();
+    }
+
+    public void InitializeInventory() {
+        int i;
+
+        for (i = 0; i < 8; i++) {
+            seedInv.add(i, 0);
+        }
     }
 
     public void CheckExpBonus() {
@@ -19,11 +27,7 @@ public class Player {
     }
 
     public void CheckSeedInventory() {
-        System.out.println(seedInv);
-    }
-
-    public void BuyMenu() {
-
+        System.out.println("Seed Inventory : " + seedInv);
     }
 
     public void BuySeeds() {
@@ -51,6 +55,13 @@ public class Player {
             } else if (choice == 1) {
                 seedData.Generate(choice);
                 type = seedData.getType();
+                if (expData.getCostReduction() == 0)
+                    System.out.println(
+                            "The price of one seed of " + seedData.getName() + " is " + seedData.getCost() + ".");
+                else
+                    System.out.println(
+                            "The price of one seed of " + seedData.getName() + " is " + seedData.getCost() + " ("
+                                    + expData.getCostReduction() + " Objectcoins deduction already applied)");
                 System.out.print("How many would you like to buy? ");
                 quantity = input.nextInt();
                 if (Ocoins >= seedData.getCost() * quantity) {
@@ -64,34 +75,28 @@ public class Player {
                     System.out.println("Sorry. You do not have enough Object Coins to purchase that many.");
                 }
             } else if (choice == 2) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 3) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 4) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 5) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 6) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 7) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 8) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             }
-        } while (choice < 0 && choice > 9);
-    }
-
-    //plant seed (minus 1 on seed inventory)
-    public void PlantSeed (int seed) {
-        seedInv.set(seed, seedInv.get(seed)-1); // change thissss
-        System.out.println("You now have planted " + seedData.getName() + ".");
+        } while (choice != 0 || (choice < 0 && choice > 9));
     }
 
     public ArrayList<Integer> getSeedInv() {

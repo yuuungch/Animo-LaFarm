@@ -81,7 +81,9 @@ public class Exp {
     }
 
     public void Registration(int money) {
-        if (exp >= 5 && farmerType.equals("Farmer")) {
+        if (exp <= 5 && farmerType.equals("Farmer")) {
+            System.out.println();
+        } else if (exp >= 5 && farmerType.equals("Farmer")) {
             RegMenu("Registered Farmer", money, 200);
             Stats();
         } else if (exp >= 10 && farmerType.equals("Registered Farmer")) {
@@ -92,4 +94,61 @@ public class Exp {
             Stats();
         }
     }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public String getFarmerType() {
+        return farmerType;
+    }
+
+    public void setFarmerType(String farmerType) {
+        this.farmerType = farmerType;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getEarningBonus() {
+        return earningBonus;
+    }
+
+    public void setEarningBonus(int earningBonus) {
+        this.earningBonus = earningBonus;
+    }
+
+    public int getCostReduction() {
+        return costReduction;
+    }
+
+    public void setCostReduction(int costReduction) {
+        this.costReduction = costReduction;
+    }
+
+    public int getWaterBonus() {
+        return waterBonus;
+    }
+
+    public void setWaterBonus(int waterBonus) {
+        this.waterBonus = waterBonus;
+    }
+
+    public int getFertiBonus() {
+        return fertiBonus;
+    }
+
+    public void setFertiBonus(int fertiBonus) {
+        this.fertiBonus = fertiBonus;
+    }
+
 }

@@ -2,252 +2,157 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Farm {
-    //attributes
+    private ArrayList<Tile> Land;
     private Player player;
     private Tile tile;
     private int day;
-    private Seeds seedData; // Seed Database
 
-    //constructor
-    public Farm(Player player, Tile tile, Seeds seedData) {
+    public Farm(Player player, Tile tile) {
+        Land = new ArrayList<Tile>();
         this.player = player;
         this.tile = tile;
-        this.seedData = seedData;
         day = 1;
     }
-    
-    //create method for menu
+
     public void Menu() {
-        //create scanner for user inputs
         Scanner input = new Scanner(System.in);
+        int choice, c1, c2, i;
 
-        //create arraylist for the farm land
-        ArrayList<ArrayList<ArrayList<Integer>>> Land = new ArrayList(9);
-        Tile[][] farmLotTile = new Tile[1][1];
-        
+        player.InitializeInventory();
 
-        //create temporary arraylist for player seed inventory
-        ArrayList<Integer> temp = new ArrayList<Integer>();
+        Land.add(0, tile); // set tile 1 with corresponding tile state
 
-        //variables needed in method
-        int choice, r1, c1, s3, r3, c3, r4, c4, r5, c5, r6, c6, i;
+        Land.get(0).getPlowState();
 
-        
-
-        // set tiles with corresponding tile state
-        for ( int row = 0; row < farmLotTile.length; row++){
-            for (int col = 0; col < farmLotTile[row].length; col++){
-                farmLotTile[row][col] = new Tile(0,0,0,0,0,0);
-                // farmLotTile[row][col].setPlowState(0);
-                // farmLotTile[row][col].setSeedState(0);
-                // farmLotTile[row][col].setSeedPlanted(0);
-                // farmLotTile[row][col].setWaterState(0);
-                // farmLotTile[row][col].setFertilizedState(0);
-                // farmLotTile[row][col].setPlantDate(0);
-            }
-        }
-        
-
-        // set the values of the player seed inventory arraylist
         for (i = 0; i < 8; i++) {
-            temp.add(i, 0);
+            player.setSeedInv(player.getSeedInv());
         }
-        player.setSeedInv(temp);
-
         do {
-            //create choices
-            System.out.println("Land State: " + Land); // debugging
-            System.out.println("[1] Plow Tile"); // in Tile class
-            System.out.println("[2] Buy Seeds"); // in Player class
-            System.out.println("[3] Plant Seed"); // in Tile class
-            System.out.println("[4] Water Tile"); // in Tile class
-            System.out.println("[5] Fertilize Tile"); // in Tile class
-            System.out.println("[6] Harvest Tile"); // in Tile class
-            System.out.println("[7] Check Player"); // in Player and Exp class
-            System.out.println("[0] Advance Day"); // here in Farm class
+            do {
+                System.out.println("Today is day " + day);
+                System.out.println("Land Plow State: " + Land.get(0).getPlowState()); // debugging
+                System.out.println("Land Plant State: " + Land.get(0).getSeedState());
+                System.out.println("Seed Type: " + Land.get(0).getSeedInfo().getType());
+                System.out.println("Incubation Period: " + Land.get(0).getSeedInfo().getHarvestTime());
+                System.out.println("Days left before Harvestable: " + Land.get(0).getSeedInfo().getDaysLeft());
+                System.out.println("Max Water Count: " + Land.get(0).getSeedInfo().getWater() + " ("
+                        + Land.get(0).getSeedInfo().getBonusWater() + ")");
+                System.out.println("Current Water Count: " + Land.get(0).getWaterCount());
+                System.out.println("Max Fertilize Count: " + Land.get(0).getSeedInfo().getFertilizer() + " ("
+                        + Land.get(0).getSeedInfo().getBonusFertilizer() + ")");
+                System.out.println("Current Fertilize Count: " + Land.get(0).getFertiCount());
+                System.out.println("--------------------------------------------------------------");
+                System.out.println("[1] Plow Tile"); // in Tile class
+                System.out.println("[2] Buy Seeds"); // in Player class
+                System.out.println("[3] Plant Seed"); // in Tile class
+                System.out.println("[4] Water Tile"); // in Tile class
+                System.out.println("[5] Fertilize Tile"); // in Tile class
+                System.out.println("[6] Harvest Tile"); // in Tile class
+                System.out.println("[7] Remove Withers"); // in Tile class
+                System.out.println("[8] Check Player"); // in Player and Exp class
+                System.out.println("[9] Rank up"); // in Player and Seeds class
+                System.out.println("[0] Advance Day"); // here in Farm class
 
-            //get player choice
-            System.out.print("\nChoice: ");
-            choice = input.nextInt();
+                System.out.print("\nChoice: ");
+                choice = input.nextInt();
 
-            //plow tile
-            if (choice == 1) {
-                //ask player which tile they want to plow
-                System.out.print("Enter tile row number: (0-9)");
-                r1 = input.nextInt();
+                if (choice == 1) {
 
-                if (r1 >= 0 && r1 <= farmLotTile.length){
-                    System.out.print("Enter tile column number: (0-4)");
+                    System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
-                    if (c1 >= 0 && c1 <= farmLotTile[r1].length){
-                        farmLotTile[r1][c1].setPlowState(1);
-                    } else {
-                        System.out.println("Invalid. Tile does not exist");
-                    }// end of if to check if player chose a valid col tile
-                } else {
-                    System.out.println("Invalid. Tile does not exist");
-                }// end of if to check if player chose a valid row tile
-                
-            } else if (choice == 2) { // buy seed
-                player.BuySeeds();
-            } else if (choice == 3) { // plant seed
-                //show player seed inventory
-                System.out.println("You currently have: ");
-                System.out.println ("[Turnip(root crop), Carrot, Potato, Rose, Turnip(flower), Sunflower, Mango, Apple]");
-                System.out.println(player.getSeedInv());
 
-                // ask player which seed to plant
-                System.out.println("Which seed would you like to plant? (1-8)?");
-                s3 = input.nextInt();
-                
-                //change inventory
-                player.PlantSeed(s3);
-                
-                //ask player which row tile they want to plant in
-                System.out.print("Enter tile row number: (0-9)");
-                r3 = input.nextInt();
-
-                if (r3 >= 0 && r3 <= farmLotTile.length){
-                    System.out.print("Enter tile column number: (0-4)");
-                    c3 = input.nextInt();
-                    if (c3 >= 0 && c3 <= farmLotTile[r3].length){
-                        if(farmLotTile[r3][c3].getPlowState() == 1){ //check if tile is plowed
-                             farmLotTile[r3][c3].setSeedState(1);
-                             farmLotTile[r3][c3].setSeedPlanted(s3);
-                        }else{
-                            System.out.println("Error! Please plow tile before planting.");
-                        }
-                    } else {
-                        System.out.println("Invalid. Tile does not exist");
-                    }// end of if to check if player chose a valid col tile
-                } else {
-                    System.out.println("Invalid. Tile does not exist");
-                }// end of if to check if player chose a valid row tile
-           
-            } else if (choice == 4){ // water plant
-                //ask player which row tile they want to water
-                System.out.print("Enter tile row number: (0-9)");
-                r4 = input.nextInt();
-
-                if (r4 >= 0 && r4 <= farmLotTile.length){
-                    System.out.print("Enter tile column number: (0-4)");
-                    c4 = input.nextInt();
-                    if (c4 >= 0 && c4 <= farmLotTile[r4].length){
-                        if(farmLotTile[r4][c4].getSeedState() == 1){ //check if tile has a seed planted
-                             farmLotTile[r4][c4].setWaterState(farmLotTile[r4][c4].getWaterState()+1);
-                        }else{
-                            System.out.println("Error! Please plant a seed before watering the tile.");
-                        }
-                    } else {
-                        System.out.println("Invalid. Tile does not exist");
-                    }// end of if to check if player chose a valid col tile
-                } else {
-                    System.out.println("Invalid. Tile does not exist");
-                }// end of if to check if player chose a valid row tile
-               
-            } else if (choice == 5){ //fertilze plant
-                //ask player which row tile they want to water
-                System.out.print("Enter tile row number: (0-9)");
-                r5 = input.nextInt();
-
-                if (r5 >= 0 && r5 <= farmLotTile.length){
-                    System.out.print("Enter tile column number: (0-4)");
-                    c5 = input.nextInt();
-                    if (c5 >= 0 && c5 <= farmLotTile[r5].length){
-                        if(farmLotTile[r5][c5].getSeedState() == 1){ //check if tile has a seed planted
-                             farmLotTile[r5][c5].setFertilizedState(farmLotTile[r5][c5].getFertilizedState()+1);
-                        }else{
-                            System.out.println("Error! Please plant a seed before watering the tile.");
-                        }
-                    } else {
-                        System.out.println("Invalid. Tile does not exist");
-                    }// end of if to check if player chose a valid col tile
-                } else {
-                    System.out.println("Invalid. Tile does not exist");
-                }// end of if to check if player chose a valid row tile
-               
-            } else if (choice == 6) { // harvest plant
-                //ask player which row tile they want to water
-                System.out.print("Enter tile row number: (0-9)");
-                r6 = input.nextInt();
-
-                if (r6 >= 0 && r6 <= farmLotTile.length){
-                    System.out.print("Enter tile column number: (0-4)");
-                    c6 = input.nextInt();
-                    if (c6 >= 0 && c6 <= farmLotTile[r6].length){
-                        if (farmLotTile[r6][c6].getSeedPlanted() == 1) {
-                            if(farmLotTile[r6][c6].getSeedState() == 1 && farmLotTile[r6][c6].getFertilizedState() >= seedData.getFertilizer()
-                                && farmLotTile[r6][c6].getWaterState() >= seedData.getWater() && farmLotTile[r6][c6].getPlantDate() == seedData.getHarvestTime()){ //check if tile has a seed planted and if still harvestable
-                                farmLotTile[r6][c6].setFertilizedState(farmLotTile[r6][c6].getFertilizedState()+1);
-                            }else{
-                                System.out.println("Error! Please plant a seed before watering the tile.");
-                            }
-                        }else if (farmLotTile[r6][c6].getSeedPlanted() == 2) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 3) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 4) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 5) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 6) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 7) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r6][c6].getSeedPlanted() == 8) {
-                            System.out.println("Sorry this is not yet available.");
-                        }
-                    } else {
-                        System.out.println("Invalid. Tile does not exist");
-                    }// end of if to check if player chose a valid col tile
-                } else {
-                    System.out.println("Invalid. Tile does not exist");
-                }// end of if to check if player chose a valid row tile
-
-            }else if (choice == 7) {
-                System.out.println("---------------------------------");
-
-                player.CheckSeedInventory();
-                System.out.println("Objectcoins Available: " + player.getOcoins());
-                System.out.println("---------------------------------");
-                player.CheckExpBonus();
-            }else if (choice == 8) {
-                day ++;
-                System.out.println("You have advanced a day. Today is now Day " + day + ".");
-                for ( int r8 = 0; r8 < farmLotTile.length; r8++){
-                    for (int c8 = 0; c8 < farmLotTile[0].length; c8++){
-                        if (farmLotTile[r8][c8].getSeedState() == 1){
-                            farmLotTile[r8][c8].setPlantDate(farmLotTile[r8][c8].getPlantDate()+1);
-                        }
-                        //if (farmLotTile[r8][c8].getPlantDate() > )
-                        if (farmLotTile[r8][c8].getSeedPlanted() == 1) {
-                            if (farmLotTile[r8][c8].getPlantDate() > seedData.getHarvestTime() && farmLotTile[r8][c8].getWaterState() >= seedData.getWater() 
-                                && farmLotTile[r8][c8].getFertilizedState() >= seedData.getFertilizer()){
-                                farmLotTile[r8][c8].setSeedState(2);
-                            }
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 2) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 3) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 4) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 5) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 6) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 7) {
-                            System.out.println("Sorry this is not yet available.");
-                        } else if (farmLotTile[r8][c8].getSeedPlanted() == 8) {
-                            System.out.println("Sorry this is not yet available.");
-                        }
+                    if (Land.get(c1).getPlowState() == 0 || Land.get(c1).getPlowState() == 1
+                            || Land.get(c1).getPlowState() == 2) {
+                        tile.Plow(Land, c1);
                     }
+
+                } else if (choice == 2) {
+                    player.BuySeeds();
+                } else if (choice == 3) {
+                    System.out.print("Enter tile number: ");
+                    c1 = input.nextInt();
+
+                    if (Land.get(c1).getSeedState() == 0) {
+                        do {
+                            System.out.println("--Root Crops--");
+                            System.out.println("[1] Turnip");
+                            System.out.println("[2] Carrot");
+                            System.out.println("[3] Potato");
+                            System.out.println("[4] Rose");
+                            System.out.println("--Flowers--");
+                            System.out.println("[5] Turnip");
+                            System.out.println("[6] Sunflower");
+                            System.out.println("--Fruit Trees--");
+                            System.out.println("[7] Mango");
+                            System.out.println("[8] Apple");
+
+                            System.out.print("\nWhat seed would you like to plant: ");
+                            c2 = input.nextInt();
+
+                            if (c2 >= 1 && c2 <= 9) {
+                                Land.get(c1).SeedInfoGen(c2);
+
+                                if (player.getSeedInv().get(Land.get(c1).getSeedInfo().getType() - 1) == 0) {
+                                    System.out.println("Sorry. You do not have enough seeds of that kind ("
+                                            + Land.get(c1).getSeedInfo().getName() + ")");
+                                } else {
+                                    player.getSeedInv().set(Land.get(c1).getSeedInfo().getType() - 1,
+                                            player.getSeedInv().get(Land.get(c1).getSeedInfo().getType() - 1) - 1);
+                                    tile.Plant(Land, c1, c2);
+                                }
+                            }
+                        } while (c2 < 1 && c2 > 9);
+
+                    }
+                } else if (choice == 4) {
+                    System.out.print("Enter tile number: ");
+                    c1 = input.nextInt();
+
+                    tile.Water(Land, c1);
+                } else if (choice == 5) {
+                    System.out.print("Enter tile number: ");
+                    c1 = input.nextInt();
+
+                    tile.Fertilize(Land, c1);
+
+                } else if (choice == 6) {
+
+                } else if (choice == 7) {
+                    System.out.print("Enter tile number: ");
+                    c1 = input.nextInt();
+
+                    tile.RemoveWither(Land, c1, player);
+
+                } else if (choice == 8) {
+                    System.out.println("---------------------------------");
+
+                    player.CheckSeedInventory();
+                    System.out.println("Objectcoins Available: " + player.getOcoins());
+                    System.out.println("---------------------------------");
+                    player.CheckExpBonus();
+                } else if (choice == 9) {
+                    player.getExpData().Registration(player.getOcoins());
+
+                    player.getSeedData().ExpChange(player.getExpData().getEarningBonus(),
+                            player.getExpData().getCostReduction(), player.getExpData().getWaterBonus(),
+                            player.getExpData().getFertiBonus());
                 }
 
+            } while (choice != 0);
+            day++;
+
+            for (i = 0; i < Land.size(); i++) {
+                tile.WitherCheck(Land, i);
+                Land.get(i).setWateredToday(0);
+                Land.get(i).setFertilizedToday(0);
+                if (Land.get(i).getSeedInfo().getDaysLeft() > 0)
+                    Land.get(i).getSeedInfo().setDaysLeft(Land.get(i).getSeedInfo().getDaysLeft() - 1);
             }
-
-        } while (choice != 0);
-
+        } while (day != 100); // temporary
+        System.out.println("You have reached 100 days. Thank you for playing MyFarm.");
     }
+
+    // GETTERS AND SETTERS
 
     public Tile getTile() {
         return tile;
