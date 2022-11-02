@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Player {
     private ArrayList<Integer> seedInv; // Amount of seeds (and which seeds) player has
-    private int Ocoins;
+    private double Ocoins;
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
 
@@ -107,11 +107,11 @@ public class Player {
         this.seedInv = seedInv;
     }
 
-    public int getOcoins() {
+    public double getOcoins() {
         return Ocoins;
     }
 
-    public void setOcoins(int ocoins) {
+    public void setOcoins(double ocoins) {
         Ocoins = ocoins;
     }
 
