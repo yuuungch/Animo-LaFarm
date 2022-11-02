@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tile {
     private int rockState; // 0 with rock, 1 no rock
@@ -29,6 +30,7 @@ public class Tile {
         if (array.get(x).plowState == 0 && array.get(x).rockState != 0) {
             array.get(x).setPlowState(1);
             System.out.println("Tile has been successfully plowed!");
+            playerExp.GainExp(0.5, array.get(x).playerExp);
         } else if (array.get(x).plowState == 1) {
             System.out.println("Tile is already plowed!");
         } else if (array.get(x).plowState == 0 && array.get(x).rockState == 0) {
@@ -56,6 +58,7 @@ public class Tile {
             array.get(x).waterCount++;
             array.get(x).wateredToday = 1;
             System.out.println("Tile watered successfully.");
+            playerExp.GainExp(0.5, array.get(x).playerExp);
         } else if (array.get(x).waterCount <= seedInfo.getWater() || array.get(x).waterCount <= seedInfo.getBonusWater()
                 && array.get(x).wateredToday == 1) {
             System.out
@@ -69,7 +72,7 @@ public class Tile {
         }
     }
 
-    public void Fertilize(ArrayList<Tile> array, int x) {
+    public void Fertilize(ArrayList<Tile> array, int x, Player p) {
         if (array.get(x).fertiCount <= seedInfo.getFertilizer()
                 || array.get(x).fertiCount < seedInfo.getBonusFertilizer()
                         && seedInfo.getFertilizer() + seedInfo.getBonusFertilizer() != 0
@@ -77,6 +80,10 @@ public class Tile {
             array.get(x).fertiCount++;
             array.get(x).fertilizedToday = 1;
             System.out.println("Tile fertilized successfully.");
+            p.setOcoins(p.getOcoins() - 10);
+            System.out.println(
+                    "Deducted 10 Objectcoins from your Inventory. " + p.getOcoins() + " remaining.");
+            playerExp.GainExp(4, array.get(x).playerExp);
         } else if (array.get(x).fertiCount <= seedInfo.getFertilizer()
                 || array.get(x).fertiCount <= seedInfo.getBonusFertilizer()
                         && seedInfo.getFertilizer() + seedInfo.getBonusFertilizer() != 0
@@ -92,20 +99,27 @@ public class Tile {
         }
     }
 
-    public void RemoveWither(ArrayList<Tile> array, int x, Player player) {
+    public void RemoveWither(ArrayList<Tile> array, int x, Player p) {
         if (!array.get(x).witherState) {
             System.out.println("Sorry. The current tile does not contain a withered plant.");
-        } else {
-            System.out.println("Withered plant successfully removed. Deducting 7 Objectcoins from inventory.");
-            player.setOcoins(player.getOcoins() - 7);
+        } else if (array.get(x).witherState && p.getOcoins() > 0) {
+            p.setOcoins(p.getOcoins() - 7);
+            System.out.println("Withered plant successfully removed. Deducting 7 Objectcoins from inventory. "
+                    + p.getOcoins() + " Objectcoins remaining.");
+
+            playerExp.GainExp(2, array.get(x).playerExp);
+
             array.get(x).plowState = 0;
             array.get(x).witherState = false;
             array.get(x).seedState = 1;
+        } else {
+            System.out.println(
+                    "Sorry. You do not have enough Objectcoins to remove the withered plant in Tile " + x + ".");
         }
     }
 
     public void WitherCheck(ArrayList<Tile> array, int x) {
-        if (array.get(x).seedInfo.getDaysLeft() < 0 || array.get(x).wateredToday == 0) {
+        if (array.get(x).seedInfo.getDaysLeft() < 0 || array.get(x).wateredToday == 0 && array.get(x).seedState != 0) {
             System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
             array.get(x).witherState = true;
             array.get(x).seedState = 9;
@@ -115,10 +129,47 @@ public class Tile {
         }
     }
 
-    public void Harvest(ArrayList<Tile> array, int x) {
+    public void Harvest(ArrayList<Tile> array, int x, Player p) {
+        Random rand = new Random();
+
+        int produceNum;
+        double HarvestTotal, WaterBonusValue, FertilizerBonusValue, FinalHarvestPrice;
         if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() != 9) {
 
-            System.out.println("Yay! you have harvested ");
+            produceNum = rand.nextInt(array.get(x).seedInfo.getProduceMin(), array.get(x).seedInfo.getProduceMax() + 1);
+            HarvestTotal = produceNum
+                    * (array.get(x).seedInfo.getBaseSell() + array.get(x).playerExp.getEarningBonus());
+            WaterBonusValue = HarvestTotal * 0.2 * (array.get(x).getWaterCount() - 1);
+            FertilizerBonusValue = HarvestTotal * 0.5 * (array.get(x).getFertiCount());
+            FinalHarvestPrice = HarvestTotal + WaterBonusValue + FertilizerBonusValue;
+
+            System.out.println(
+                    "Yay! you have harvested " + produceNum + " pieces of " + seedInfo.getName() + ".");
+            System.out.println("Profit Breakdown:");
+            System.out.println("-----------------------");
+            System.out.println("Total Number of Harvest: " + produceNum);
+            System.out.println("Price for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell());
+            System.out.println("Times Plant was Watered: " + array.get(x).getWaterCount());
+            System.out.println("Water Bonus: " + WaterBonusValue);
+            System.out.println("Times Plant was Fertilized: " + array.get(x).getFertiCount());
+            System.out.println("Fertilizer Bonus: " + FertilizerBonusValue);
+
+            if (array.get(x).seedInfo.getType() >= 4 && array.get(x).seedInfo.getType() <= 6) {
+                System.out.println("Flower Multiplier Bonus: 1.1");
+                FinalHarvestPrice *= 1.1;
+            }
+
+            System.out.println("Total Profit: " + FinalHarvestPrice);
+
+            System.out.println("-------------------------");
+
+            p.setOcoins(p.getOcoins() + FinalHarvestPrice);
+
+            System.out.println("Added " + FinalHarvestPrice + " to your inventory. Total of " + p.getOcoins()
+                    + " Objectcoins in inventory.");
+
+            playerExp.GainExp(array.get(x).seedInfo.getExpYield(), array.get(x).playerExp);
+
             array.get(x).plowState = 0;
             array.get(x).seedState = 0;
             array.get(x).waterCount = 0;
