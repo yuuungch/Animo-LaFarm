@@ -21,27 +21,24 @@ public class Farm {
         player.InitializeInventory();
 
         Land.add(0, tile); // set tile 1 with corresponding tile state
-
-        Land.get(0).getPlowState();
-
-        for (i = 0; i < 8; i++) {
-            player.setSeedInv(player.getSeedInv());
-        }
         do {
             do {
+                player.getExpData().LevelUp();
+
                 System.out.println("Today is day " + day);
-                System.out.println("Land Plow State: " + Land.get(0).getPlowState()); // debugging
-                System.out.println("Land Plant State: " + Land.get(0).getSeedState());
-                System.out.println("Seed Type: " + Land.get(0).getSeedInfo().getType());
-                System.out.println("Incubation Period: " + Land.get(0).getSeedInfo().getHarvestTime());
-                System.out.println("Days left before Harvestable: " + Land.get(0).getSeedInfo().getDaysLeft());
-                System.out.println("Max Water Count: " + Land.get(0).getSeedInfo().getWater() + " ("
-                        + Land.get(0).getSeedInfo().getBonusWater() + ")");
-                System.out.println("Current Water Count: " + Land.get(0).getWaterCount());
-                System.out.println("Max Fertilize Count: " + Land.get(0).getSeedInfo().getFertilizer() + " ("
-                        + Land.get(0).getSeedInfo().getBonusFertilizer() + ")");
-                System.out.println("Current Fertilize Count: " + Land.get(0).getFertiCount());
-                System.out.println("--------------------------------------------------------------");
+
+                if (Land.get(0).getSeedState() >= 1 && Land.get(0).getSeedState() <= 8) {
+                    System.out.println("Incubation Period: " + Land.get(0).getSeedInfo().getHarvestTime());
+                    System.out.println("Days left before Harvestable: " + Land.get(0).getSeedInfo().getDaysLeft());
+                    System.out.println("Max Water Count: " + Land.get(0).getSeedInfo().getWater() + " ("
+                            + Land.get(0).getSeedInfo().getBonusWater() + ")");
+                    System.out.println("Current Water Count: " + Land.get(0).getWaterCount());
+                    System.out.println("Max Fertilize Count: " + Land.get(0).getSeedInfo().getFertilizer() + " ("
+                            + Land.get(0).getSeedInfo().getBonusFertilizer() + ")");
+                    System.out.println("Current Fertilize Count: " + Land.get(0).getFertiCount());
+                    System.out.println("--------------------------------------------------------------");
+                }
+
                 System.out.println("[1] Plow Tile"); // in Tile class
                 System.out.println("[2] Buy Seeds"); // in Player class
                 System.out.println("[3] Plant Seed"); // in Tile class
@@ -109,13 +106,18 @@ public class Farm {
                     c1 = input.nextInt();
 
                     tile.Water(Land, c1);
+
                 } else if (choice == 5) {
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
-                    tile.Fertilize(Land, c1);
+                    tile.Fertilize(Land, c1, player);
 
                 } else if (choice == 6) {
+                    System.out.print("Enter tile number: ");
+                    c1 = input.nextInt();
+
+                    tile.Harvest(Land, c1, player);
 
                 } else if (choice == 7) {
                     System.out.print("Enter tile number: ");
@@ -131,7 +133,7 @@ public class Farm {
                     System.out.println("---------------------------------");
                     player.CheckExpBonus();
                 } else if (choice == 9) {
-                    player.getExpData().Registration(player.getOcoins());
+                    player.getExpData().Registration(player);
 
                     player.getSeedData().ExpChange(player.getExpData().getEarningBonus(),
                             player.getExpData().getCostReduction(), player.getExpData().getWaterBonus(),
@@ -148,8 +150,8 @@ public class Farm {
                 if (Land.get(i).getSeedInfo().getDaysLeft() > 0)
                     Land.get(i).getSeedInfo().setDaysLeft(Land.get(i).getSeedInfo().getDaysLeft() - 1);
             }
-        } while (day != 100); // temporary
-        System.out.println("You have reached 100 days. Thank you for playing MyFarm.");
+        } while (day != 1000); // temporary
+        System.out.println("You have reached 1000 days. Thank you for playing MyFarm.");
     }
 
     // GETTERS AND SETTERS
