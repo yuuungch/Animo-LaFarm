@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Exp {
-    private int exp;
+    private double exp;
     private String farmerType;
     private int level;
     private int earningBonus;
@@ -17,6 +17,15 @@ public class Exp {
         costReduction = 0;
         waterBonus = 0;
         fertiBonus = 0;
+    }
+
+    // x is gained exp, y, is current exp, z is level
+    public void GainExp(double x, Exp y) {
+        y.setExp(y.getExp() + x);
+        System.out.println(
+                "You have gained " + x + " experience points! (" + y.getExp() + " / " + (y.getLevel() + 1) * 100 + ")");
+
+        LevelUp();
     }
 
     public void LevelUp() {
@@ -37,7 +46,7 @@ public class Exp {
         System.out.println("Fertilizer Bonus Limit Increase: " + fertiBonus);
     }
 
-    public void RegMenu(String nextType, int money, int regcap) {
+    public void RegMenu(String nextType, Player p, int regcap) {
         Scanner input = new Scanner(System.in);
         int choice;
 
@@ -49,10 +58,14 @@ public class Exp {
             System.out.print("Would you like to register as a " + nextType + "? ");
             choice = input.nextInt();
 
-            if (choice == 1 && money >= regcap) {
+            if (choice == 1 && p.getOcoins() >= regcap) {
                 farmerType = nextType;
                 System.out.println("Congratulations! You have successfully registered as a " + farmerType + ".");
-            } else if (choice == 1 && money < regcap) {
+
+                p.setOcoins(p.getOcoins() - regcap);
+                System.out.println("Deducted " + regcap + " Objectcoins for registration. " + p.getOcoins()
+                        + " Objectcoins remaining.");
+            } else if (choice == 1 && p.getOcoins() < regcap) {
                 System.out.println("Sorry. You do not have enough Objectcoins to register as a " + nextType + ".");
             } else if (choice == 2) {
                 System.out.println("Okay. Status remains at " + farmerType + ".");
@@ -80,26 +93,26 @@ public class Exp {
         }
     }
 
-    public void Registration(int money) {
+    public void Registration(Player p) {
         if (exp <= 5 && farmerType.equals("Farmer")) {
             System.out.println();
         } else if (exp >= 5 && farmerType.equals("Farmer")) {
-            RegMenu("Registered Farmer", money, 200);
+            RegMenu("Registered Farmer", p, 200);
             Stats();
         } else if (exp >= 10 && farmerType.equals("Registered Farmer")) {
-            RegMenu("Distinguished Farmer", money, 300);
+            RegMenu("Distinguished Farmer", p, 300);
             Stats();
         } else if (exp >= 15 && farmerType.equals("Distinguished Farmer")) {
-            RegMenu("Legendary Farmer", money, 400);
+            RegMenu("Legendary Farmer", p, 400);
             Stats();
         }
     }
 
-    public int getExp() {
+    public double getExp() {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExp(double exp) {
         this.exp = exp;
     }
 
