@@ -277,7 +277,7 @@ public class Seeds {
         return expYield;
     }
 
-    public void setExpYield(double expYield) {
+    public void setExpYield(int expYield) {
         this.expYield = expYield;
     }
 
