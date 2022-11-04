@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Player {
     private ArrayList<Integer> seedInv; // Amount of seeds (and which seeds) player has
-    private int Ocoins;
+    private double Ocoins;
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
 
@@ -26,7 +26,7 @@ public class Player {
 
     }
 
-    public void BuySeeds() {
+    public void BuySeeds(){
         Scanner input = new Scanner(System.in);
         int choice, type, prev, quantity;
 
@@ -86,12 +86,17 @@ public class Player {
                 System.out.println("Out of stock. Sorry.");
             }
         } while (choice < 0 && choice > 9);
+    
+    }
+    public boolean runOutOfSeeds (ArrayList<Integer> seedInv){
+        return seedInv.isEmpty() || seedInv.stream()
+        .allMatch(seedInv.get(0)::equals);
     }
 
     //plant seed (minus 1 on seed inventory)
     public void PlantSeed (int seed) {
-        seedInv.set(seed, seedInv.get(seed)-1); // change thissss
-        System.out.println("You now have planted " + seedData.getName() + ".");
+        seedInv.set(seed-1, seedInv.get(seed)); // change thissss
+        System.out.println("You are now planting " + seedData.getName() + ".");
     }
 
     public ArrayList<Integer> getSeedInv() {
@@ -102,12 +107,12 @@ public class Player {
         this.seedInv = seedInv;
     }
 
-    public int getOcoins() {
+    public double getOcoins() {
         return Ocoins;
     }
 
-    public void setOcoins(int ocoins) {
-        Ocoins = ocoins;
+    public void setOcoins(double d) {
+        Ocoins = d;
     }
 
     public Seeds getSeedData() {

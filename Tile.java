@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Random;
+
 // import java.util.Scanner;
 
 public class Tile {
@@ -13,74 +15,43 @@ public class Tile {
     private int waterState; 
     private int fertilizedState;
     private int plantDate; 
-    //private Seeds seedData; // Seed Database
+    private int produce;
 
-    
-
-    // public Tile() {
-    //     plowState = 0;
-    //     seedState = 0;
-    //     seedPlanted = 0;
-    //     waterState = 0;
-    //     fertilizedState = 0;
-    //     plantDate = 0;
-    // }
-
-    // public void Plow(Tile[][] array, int r, int c) {
-    //     if (array[r][c] ) {
-    //         array.set(x, 1);
-    //         System.out.println("Tile has been successfully plowed!");
-    //     } else if (array.get(x) == 1) {
-    //         System.out.println("Tile is already plowed!");
-    //     } else if (array.get(x) == 2) {
-    //         System.out.println("Tile cannot be plowed as there are rocks on it.");
-    //     }
-    //}
-
-    // public void Plant(ArrayList<Integer> array, int x, int y, int seed){
-    //     if (array.get(x) == 0) {
-    //         array.set(x, 1);
-    //         array.set(y, seed);
-    //         System.out.println("Seed has been successfully planted!");
-    //     } else if (array.get(x) == 1) {
-    //         System.out.println("A seed is already planted!");
-    //     } 
-    // }
-
-    // public void Water(ArrayList<Integer> array, int x){
-    //     if (array.get(x) >= 0|| array.get(x) <= seedData.getBonusWater()) {
-    //         array.set(x, array.get(x)+1);
-    //         System.out.println("Plant has been successfully watered!");
-    //     } else if (array.get(x) > seedData.getBonusWater()) {
-    //         System.out.println("Plant is already on bonus water limit!");
-    //     } 
-    // }
-
-    // public void Fertilize(ArrayList<Integer> array, int x){
-    //     if (array.get(x) >= 0|| array.get(x) <= seedData.getBonusFertilizer()) {
-    //         array.set(x, array.get(x)+1);
-    //         System.out.println("Plant has been successfully fertilized!");
-    //     } else if (array.get(x) > seedData.getBonusFertilizer()) {
-    //         System.out.println("Plant is already on bonus fertilize limit!");
-    //     } 
-    // }
-
-    // public void Harvest(ArrayList<Integer> array, int x){
-    //     if (array.get(3) >= seedData.getWater() && array.get(4) >= seedData.getFertilizer()){
-    //         array.set(x, 0);
-    //         array.set(x-1, 0);
-    //         array.set(x-2, 0);
-    //     }
-    // }
-
-
-    public Tile(int plowState, int seedState, int seedPlanted, int waterState, int fertilizedState, int plantDate) {
+    public Tile(int plowState, int seedState, int seedPlanted, int waterState, int fertilizedState, int plantDate, int produce) {
         this.plowState = plowState;
         this.seedState = seedState;
         this.seedPlanted = seedPlanted;
         this.waterState = waterState;
         this.fertilizedState = fertilizedState;
         this.plantDate = plantDate;
+        this.produce = produce;
+    }
+
+    public int createProduce(int seed){
+        if (seed == 1 || seed == 2) {
+            int max = 2;
+            int min = 1;
+            Random randomNum = new Random();
+            produce = min + randomNum.nextInt(max);
+        } else if (seed == 3) {
+            int max = 10;
+            int min = 1;
+            Random randomNum = new Random();
+            produce = min + randomNum.nextInt(max);
+        } else if (seed == 4|| seed == 5 || seed == 6) {
+            produce = 1;
+        } else if (seed == 7) {
+            int max = 15;
+            int min = 5;
+            Random randomNum = new Random();
+            produce = min + randomNum.nextInt(max);
+        } else if (seed == 8) {
+            int max = 15;
+            int min = 10;
+            Random randomNum = new Random();
+            produce = min + randomNum.nextInt(max);
+        }
+        return produce;
     }
 
     public Integer getPlowState() {
@@ -129,6 +100,10 @@ public class Tile {
 
     public void setPlantDate(int plantDate) {
         this.plantDate = plantDate;
+    }
+
+    public void setProduce(int produce) {
+        this.produce = produce;
     }
     
 }

@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Exp {
-    private int exp;
+    private double exp;
     private String farmerType;
     private int level;
     private int earningBonus;
@@ -9,14 +9,16 @@ public class Exp {
     private int waterBonus;
     private int fertiBonus;
 
-    public Exp() {
-        exp = 0;
-        farmerType = "Farmer";
-        level = 0;
-        earningBonus = 0;
-        costReduction = 0;
-        waterBonus = 0;
-        fertiBonus = 0;
+
+    public Exp(double exp, String farmerType, int level, int earningBonus, int costReduction, int waterBonus,
+            int fertiBonus) {
+        this.exp = exp;
+        this.farmerType = farmerType;
+        this.level = level;
+        this.earningBonus = earningBonus;
+        this.costReduction = costReduction;
+        this.waterBonus = waterBonus;
+        this.fertiBonus = fertiBonus;
     }
 
     public void LevelUp() {
@@ -92,4 +94,62 @@ public class Exp {
             Stats();
         }
     }
+
+    public double getExp() {
+        return exp;
+    }
+
+    public void setExp(double d) {
+        this.exp = d;
+    }
+
+    public String getFarmerType() {
+        return farmerType;
+    }
+
+    public void setFarmerType(String farmerType) {
+        this.farmerType = farmerType;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getEarningBonus() {
+        return earningBonus;
+    }
+
+    public void setEarningBonus(int earningBonus) {
+        this.earningBonus = earningBonus;
+    }
+
+    public int getCostReduction() {
+        return costReduction;
+    }
+
+    public void setCostReduction(int costReduction) {
+        this.costReduction = costReduction;
+    }
+
+    public int getWaterBonus() {
+        return waterBonus;
+    }
+
+    public void setWaterBonus(int waterBonus) {
+        this.waterBonus = waterBonus;
+    }
+
+    public int getFertiBonus() {
+        return fertiBonus;
+    }
+
+    public void setFertiBonus(int fertiBonus) {
+        this.fertiBonus = fertiBonus;
+    }
+
+    
 }

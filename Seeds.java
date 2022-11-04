@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Seeds {
     private int type;
     private String name;
@@ -38,13 +40,13 @@ public class Seeds {
     public void Generate(int x) {
         if (x == 1) {
             type = 1;
-            name = "Turnip (root crop";
+            name = "Turnip (root crop)";
             harvestTime = 2;
             water = 1;
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            // produce = 1 to 2;
+            //produce = 1-2;
             cost = 5;
             baseSell = 6;
             expYield = 5;
@@ -56,7 +58,7 @@ public class Seeds {
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            // produce = 1 to 2;
+            //produce = 1-2;
             cost = 10;
             baseSell = 9;
             expYield = 7.5;
@@ -68,7 +70,7 @@ public class Seeds {
             bonusWater = 4;
             fertilizer = 1;
             bonusFertilizer = 2;
-            // produce = 1 to 10;
+            //produce = 1-10;
             cost = 20;
             baseSell = 3;
             expYield = 12.5;
@@ -80,7 +82,7 @@ public class Seeds {
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            // produce = 1;
+            //produce = 1;
             cost = 10;
             baseSell = 5;
             expYield = 2.5;
@@ -92,7 +94,7 @@ public class Seeds {
             bonusWater = 3;
             fertilizer = 0;
             bonusFertilizer = 1;
-            // produce = 1;
+            //produce = 1;
             cost = 10;
             baseSell = 19;
             expYield = 5;
@@ -116,7 +118,7 @@ public class Seeds {
             bonusWater = 7;
             fertilizer = 4;
             bonusFertilizer = 4;
-            // produce = 5 to 15;
+            //produce = 5-15;
             cost = 100;
             baseSell = 8;
             expYield = 25;
@@ -128,7 +130,7 @@ public class Seeds {
             bonusWater = 7;
             fertilizer = 5;
             bonusFertilizer = 5;
-            // produce = 10 to 15;
+            //produce = 10-15;
             cost = 200;
             baseSell = 5;
             expYield = 25;
@@ -222,5 +224,6 @@ public class Seeds {
     public void setExpYield(double expYield) {
         this.expYield = expYield;
     }
+
 
 }
