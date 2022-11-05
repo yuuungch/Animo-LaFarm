@@ -14,19 +14,23 @@ public class Farm {
         day = 1;
     }
 
+    /**
+     * MAIN MENU FOR THE WHOLE PROGRAM
+     */
     public void Menu() {
         Scanner input = new Scanner(System.in);
         int choice, c1, c2, i;
 
-        player.InitializeInventory();
+        player.InitializeInventory(); // Initialize Inventory
 
         Land.add(0, tile); // set tile 1 with corresponding tile state
         do {
             do {
-                player.getExpData().LevelUp();
+                player.getExpData().LevelUp(); // Validator
 
                 System.out.println("Today is day " + day);
 
+                // Seed Information on Tile 0; Only shows up when there is a plant present
                 if (Land.get(0).getSeedState() >= 1 && Land.get(0).getSeedState() <= 8) {
                     System.out.println("Incubation Period: " + Land.get(0).getSeedInfo().getHarvestTime());
                     System.out.println("Days left before Harvestable: " + Land.get(0).getSeedInfo().getDaysLeft());
@@ -39,13 +43,13 @@ public class Farm {
                     System.out.println("--------------------------------------------------------------");
                 }
 
-                System.out.println("[1] Plow Tile"); // in Tile class
+                System.out.println("[1] Plow Tile"); // in Tile class (To be moved to Hoe Class)
                 System.out.println("[2] Buy Seeds"); // in Player class
                 System.out.println("[3] Plant Seed"); // in Tile class
-                System.out.println("[4] Water Tile"); // in Tile class
-                System.out.println("[5] Fertilize Tile"); // in Tile class
+                System.out.println("[4] Water Tile"); // in Tile class (To be moved to WateringCan Class)
+                System.out.println("[5] Fertilize Tile"); // in Tile class (To be moved to Fertilize Class)
                 System.out.println("[6] Harvest Tile"); // in Tile class
-                System.out.println("[7] Remove Withers"); // in Tile class
+                System.out.println("[7] Remove Withers"); // in Tile class (To be moved to Shovel Class)
                 System.out.println("[8] Check Player"); // in Player and Exp class
                 System.out.println("[9] Rank up"); // in Player and Seeds class
                 System.out.println("[0] Advance Day"); // here in Farm class
@@ -53,7 +57,7 @@ public class Farm {
                 System.out.print("\nChoice: ");
                 choice = input.nextInt();
 
-                if (choice == 1) {
+                if (choice == 1) { // PLOW
 
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
@@ -63,9 +67,9 @@ public class Farm {
                         tile.Plow(Land, c1);
                     }
 
-                } else if (choice == 2) {
+                } else if (choice == 2) { // BUY
                     player.BuySeeds();
-                } else if (choice == 3) {
+                } else if (choice == 3) { // PLANT
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
@@ -87,7 +91,7 @@ public class Farm {
                             c2 = input.nextInt();
 
                             if (c2 >= 1 && c2 <= 9) {
-                                Land.get(c1).SeedInfoGen(c2);
+                                Land.get(c1).getSeedInfo().Generate(c2);
 
                                 if (player.getSeedInv().get(Land.get(c1).getSeedInfo().getType() - 1) == 0) {
                                     System.out.println("Sorry. You do not have enough seeds of that kind ("
@@ -101,38 +105,38 @@ public class Farm {
                         } while (c2 < 1 && c2 > 9);
 
                     }
-                } else if (choice == 4) {
+                } else if (choice == 4) { // WATER
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
-                    tile.Water(Land, c1);
+                    tile.Water(Land, c1); // TO BE MOVED TO HOE CLASS
 
-                } else if (choice == 5) {
+                } else if (choice == 5) { // FERTILIZE
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
-                    tile.Fertilize(Land, c1, player);
+                    tile.Fertilize(Land, c1, player); // TO BE MOVED TO FERTILIZE CLASS
 
-                } else if (choice == 6) {
+                } else if (choice == 6) { // HARVEST
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
                     tile.Harvest(Land, c1, player);
 
-                } else if (choice == 7) {
+                } else if (choice == 7) { // REMOVE WITHER
                     System.out.print("Enter tile number: ");
                     c1 = input.nextInt();
 
-                    tile.RemoveWither(Land, c1, player);
+                    tile.RemoveWither(Land, c1, player); // TO BE MOVED TO SHOVEL CLASS
 
-                } else if (choice == 8) {
+                } else if (choice == 8) { // CHECK PLAYER
                     System.out.println("---------------------------------");
 
                     player.CheckSeedInventory();
                     System.out.println("Objectcoins Available: " + player.getOcoins());
                     System.out.println("---------------------------------");
-                    player.CheckExpBonus();
-                } else if (choice == 9) {
+                    player.getExpData().CheckStatus();
+                } else if (choice == 9) { // RANK UP
                     player.getExpData().Registration(player);
 
                     player.getSeedData().ExpChange(player.getExpData().getEarningBonus(),
@@ -140,17 +144,18 @@ public class Farm {
                             player.getExpData().getFertiBonus());
                 }
 
-            } while (choice != 0);
+            } while (choice != 0); // DAY CYCLE
             day++;
 
-            for (i = 0; i < Land.size(); i++) {
+            for (i = 0; i < Land.size(); i++) { // RESET DAILY STATS (WATERTODAY AND FERTILIZEDTODAY) AND SUBTRACT 1 DAY
+                                                // FROM HARVEST PERIOD
                 tile.WitherCheck(Land, i);
                 Land.get(i).setWateredToday(0);
                 Land.get(i).setFertilizedToday(0);
                 if (Land.get(i).getSeedInfo().getDaysLeft() > 0)
                     Land.get(i).getSeedInfo().setDaysLeft(Land.get(i).getSeedInfo().getDaysLeft() - 1);
             }
-        } while (day != 1000); // temporary
+        } while (day != 1000); // Temporary Limiter for Game
         System.out.println("You have reached 1000 days. Thank you for playing MyFarm.");
     }
 
