@@ -29,7 +29,9 @@ public class Seeds {
         expYield = 0;
     }
 
-    /*
+    /**
+     * * Method to generate the respective stats and values for each type of plant.
+     * List of plant provided below:
      * 1. Turnip (root Crop)
      * 2. Carrot
      * 3. Potato
@@ -38,9 +40,11 @@ public class Seeds {
      * 6. Sunflower
      * 7. Mango
      * 8. Apple
+     * 
+     * @param x integer variable to determine which number is which plant
      */
     public void Generate(int x) {
-        if (x == 0) {
+        if (x == 0) { // BASE DEFAULT
             type = 0;
             name = "";
             harvestTime = 0;
@@ -54,7 +58,7 @@ public class Seeds {
             cost = 0;
             baseSell = 0;
             expYield = 0;
-        } else if (x == 1) {
+        } else if (x == 1) { // TURNIP ROOT CROP
             type = 1;
             name = "Turnip (root crop)";
             harvestTime = 2;
@@ -169,12 +173,21 @@ public class Seeds {
         }
     }
 
+    /**
+     * Method to immediately add the bonuses to the respective base stats
+     * 
+     * @param earningBonus  bonus amount added to base Sell price
+     * @param costReduction bonus amount deducted from base Cost price
+     * @param waterBonus    bonus amount added to base Water limit
+     * @param fertiBonus    bonus amount added to base Fertilize limit
+     */
     public void ExpChange(int earningBonus, int costReduction, int waterBonus, int fertiBonus) {
         baseSell += earningBonus;
         cost -= costReduction;
         bonusWater += waterBonus;
         bonusFertilizer += fertiBonus;
     }
+
     // GETTERS AND SETTERS
 
     public int getType() {
