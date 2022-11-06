@@ -121,6 +121,16 @@ public class Player {
         } while (choice != 0);
     }
 
+    /**
+     * Method for checking if the seeds of the player has run out
+     * 
+
+     */
+    public boolean runOutOfSeeds (){
+        return seedInv.isEmpty() || seedInv.stream()
+        .allMatch(seedInv.get(0)::equals);
+    }
+
     public ArrayList<Integer> getSeedInv() {
         return seedInv;
     }

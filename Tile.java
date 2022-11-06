@@ -13,7 +13,7 @@ public class Tile {
     private Seeds seedInfo; // contains information regarding which seed
     private Exp playerExp;
 
-    public Tile(Exp playerExp) {
+    public Tile(Seeds seedInfo, Exp playerExp) {
         rockState = 1;
         plowState = 0;
         seedState = 0;
@@ -22,26 +22,8 @@ public class Tile {
         wateredToday = 0;
         fertiCount = 0;
         fertilizedToday = 0;
-        seedInfo = new Seeds();
+        this.seedInfo = seedInfo;
         this.playerExp = playerExp;
-    }
-
-    /**
-     * Method for plowing a tile (To be moved to Hoe class)
-     * 
-     * @param array ArrayList of Tiles
-     * @param x     Tile number
-     */
-    public void Plow(ArrayList<Tile> array, int x) {
-        if (array.get(x).plowState == 0 && array.get(x).rockState != 0) {
-            array.get(x).setPlowState(1);
-            System.out.println("Tile has been successfully plowed!");
-            playerExp.GainExp(0.5, array.get(x).playerExp);
-        } else if (array.get(x).plowState == 1) {
-            System.out.println("Tile is already plowed!");
-        } else if (array.get(x).plowState == 0 && array.get(x).rockState == 0) {
-            System.out.println("Tile cannot be plowed as there are rocks on it.");
-        }
     }
 
     /**
@@ -66,107 +48,6 @@ public class Tile {
     }
 
     /**
-     * Method to water a tile with a plant (to be moved to WateringCan class)
-     * 
-     * @param array ArrayList of Tiles
-     * @param x     Tile Number
-     */
-    public void Water(ArrayList<Tile> array, int x) {
-        if (array.get(x).plowState == 0) { // NOT YET PLOWED
-            System.out.println("Please plow this tile first before watering!");
-        } else if (array.get(x).seedState == 0) { // NO SEED PRESENT
-            System.out.println("Please plant a seed onto this tile first before watering!");
-        } else if (array.get(x).waterCount <= seedInfo.getWater()
-                || array.get(x).waterCount < seedInfo.getBonusWater() + playerExp.getWaterBonus()
-                        && array.get(x).wateredToday == 0) { // TLDR: if water count does not yet exceed the maximum
-                                                             // number of
-                                                             // watering and has not yet been watered today
-            array.get(x).waterCount++;
-            array.get(x).wateredToday = 1;
-            System.out.println("Tile watered successfully.");
-            array.get(x).playerExp.GainExp(0.5, array.get(x).playerExp);
-        } else if (array.get(x).waterCount <= seedInfo.getWater() || array.get(x).waterCount <= seedInfo.getBonusWater()
-                && array.get(x).wateredToday == 1) { // ALREADY WATERED
-            System.out
-                    .println("Tile has already been watered today. Please come again tomorrow to continute watering.");
-        } else if (array.get(x).waterCount > seedInfo.getWater()
-                && array.get(x).waterCount >= seedInfo.getBonusWater()) { // MAX AMOUNT REACHED
-            System.out.println("You have reached the maximum amount that you can water this tile.");
-        } else if (array.get(x).seedState == 9) { // WITHERED PLANT PRESENT
-            System.out.println(
-                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.");
-        }
-    }
-
-    /**
-     * Method to Fertilize a Tile (to be moved to Fertilize class)
-     * 
-     * @param array ArrayList of Tiles
-     * @param x     Tile Number
-     * @param p     Player class; used to directly interact with the Ocoins variable
-     *              of the player
-     */
-    public void Fertilize(ArrayList<Tile> array, int x, Player p) {
-        if (array.get(x).plowState == 0) { // NOT YET PLOWED
-            System.out.println("Please plow this tile first before fertilizing!");
-        } else if (array.get(x).seedState == 0) { // NO SEED PRESENT
-            System.out.println("Please plant a seed onto this tile first before fertilizing!");
-        } else if (array.get(x).fertiCount <= seedInfo.getFertilizer()
-                || array.get(x).fertiCount < seedInfo.getBonusFertilizer() + playerExp.getFertiBonus()
-                        && seedInfo.getFertilizer() + seedInfo.getBonusFertilizer() != 0
-                        && array.get(x).fertilizedToday == 0) { // TLDR: if fertilize count does not yet exceed the
-                                                                // maximum number of fertilizing and has not yet been
-                                                                // fertilized today
-            array.get(x).fertiCount++;
-            array.get(x).fertilizedToday = 1;
-            System.out.println("Tile fertilized successfully.");
-            p.setOcoins(p.getOcoins() - 10);
-            System.out.println(
-                    "Deducted 10 Objectcoins from your Inventory. " + p.getOcoins() + " remaining.");
-            array.get(x).playerExp.GainExp(4, array.get(x).playerExp);
-        } else if (array.get(x).fertiCount <= seedInfo.getFertilizer()
-                || array.get(x).fertiCount <= seedInfo.getBonusFertilizer()
-                        && seedInfo.getFertilizer() + seedInfo.getBonusFertilizer() != 0
-                        && array.get(x).fertilizedToday == 1) { // ALREADY FERTILIZED
-            System.out.println(
-                    "Tile has already been fertilized today. Please come again tomorrow to continue fertilizing.");
-        } else if (array.get(x).fertiCount > seedInfo.getFertilizer()
-                && array.get(x).fertiCount >= seedInfo.getBonusFertilizer()) { // MAX AMOUNT REACHED
-            System.out.println("You have reached the maximum amount that you can fertilize this tile.");
-        } else if (array.get(x).seedState == 9) {
-            System.out.println(
-                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.");
-        }
-    }
-
-    /**
-     * Method to remove withered plants from tiles (to be moved to Shovel class)
-     * 
-     * @param array ArrayList of Tiles
-     * @param x     Tile Number
-     * @param p     Player class; used to directly interact with the Ocoins variable
-     *              of the player
-     */
-    public void RemoveWither(ArrayList<Tile> array, int x, Player p) {
-        if (!array.get(x).witherState) { // NO WITHERED PLANT
-            System.out.println("Sorry. The current tile does not contain a withered plant.");
-        } else if (array.get(x).witherState && p.getOcoins() > 0) { // SUCCESS
-            p.setOcoins(p.getOcoins() - 7);
-            System.out.println("Withered plant successfully removed. Deducting 7 Objectcoins from inventory. "
-                    + p.getOcoins() + " Objectcoins remaining.");
-
-            array.get(x).playerExp.GainExp(2, array.get(x).playerExp);
-
-            array.get(x).plowState = 0;
-            array.get(x).witherState = false;
-            array.get(x).seedState = 1;
-        } else {
-            System.out.println( // NOT ENOUGH MONEY
-                    "Sorry. You do not have enough Objectcoins to remove the withered plant in Tile " + x + ".");
-        }
-    }
-
-    /**
      * Method that regularly checks for a withered plant (This method stays here in
      * Tile, DO NOT MOVE TO SHOVEL)
      * 
@@ -174,12 +55,16 @@ public class Tile {
      * @param x     Tile Number
      */
     public void WitherCheck(ArrayList<Tile> array, int x) {
-        if (array.get(x).seedInfo.getDaysLeft() < 0 || array.get(x).wateredToday == 0 && array.get(x).seedState != 0) {
+        System.out.println("days: "+ array.get(x).seedInfo.getDaysLeft());
+        System.out.println("water: "+ array.get(x).getWateredToday());
+        System.out.println("seed: "+ array.get(x).getSeedState());
+        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0 )&&
+        (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
             System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
-            array.get(x).witherState = true;
-            array.get(x).seedState = 9;
-            array.get(x).waterCount = 0;
-            array.get(x).fertiCount = 0;
+            array.get(x).setWitherState(true);
+            array.get(x).setSeedState(9);
+            array.get(x).setWaterCount(0);
+            array.get(x).setFertiCount(0);
             array.get(x).seedInfo.Generate(0);
         }
     }

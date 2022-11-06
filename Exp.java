@@ -9,6 +9,7 @@ public class Exp {
     private int waterBonus;
     private int fertiBonus;
 
+
     public Exp() {
         exp = 0;
         farmerType = "Farmer";
