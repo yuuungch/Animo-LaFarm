@@ -176,19 +176,22 @@ public class Farm {
                     tile.Harvest(Land, c1, player);
                 }
 
-                // check if there is no active growing crops
-                for (int y = 0; y < Land.size(); y++) {
-                    if (Land.get(y).getSeedState() != 0) {
-                        activeCropCheck = true;
-                    } else {
-                        activeCropCheck = false;
-                    }
-                }
-                // check if player has no more money, run out of seeds, or no more active crops
-                // then end of game
-                if (activeCropCheck == false) {
-                    EndOfGame = true;
-                }
+                /*
+                 * // check if there is no active growing crops
+                 * for (int y = 0; y < Land.size(); y++) {
+                 * if (Land.get(y).getSeedState() != 0) {
+                 * activeCropCheck = true;
+                 * } else {
+                 * activeCropCheck = false;
+                 * }
+                 * }
+                 * // check if player has no more money, run out of seeds, or no more active
+                 * crops
+                 * // then end of game
+                 * if (activeCropCheck == false) {
+                 * EndOfGame = true;
+                 * }
+                 */
 
             } else if (choice == 7) { // REMOVE WITHER
                 System.out.print("Enter tile number: ");
