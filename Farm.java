@@ -215,32 +215,22 @@ public class Farm {
                             player.getExpData().getCostReduction(), player.getExpData().getWaterBonus(),
                             player.getExpData().getFertiBonus());
 
-            } else if (choice == 0){ // DAY CYCLE
-            day++;
+                } else if (choice == 0){ // DAY CYCLE
+                    day++;
 
-            for (i = 0; i < Land.size(); i++) { // RESET DAILY STATS (WATERTODAY AND FERTILIZEDTODAY) AND SUBTRACT 1 DAY
+                    for (i = 0; i < Land.size(); i++) { // RESET DAILY STATS (WATERTODAY AND FERTILIZEDTODAY) AND SUBTRACT 1 DAY
                                                 // FROM HARVEST PERIOD
-                tile.WitherCheck(Land, i);
-                Land.get(i).setWateredToday(0);
-                Land.get(i).setFertilizedToday(0);
-                if (Land.get(i).getSeedInfo().getDaysLeft() > 0)
-                    Land.get(i).getSeedInfo().setDaysLeft(Land.get(i).getSeedInfo().getDaysLeft() - 1);
-            }
-
-            //check if all tiles have withered crops
-            for ( int y = 0; y < Land.size(); y++){
-                System.out.println("state: "+ Land.get(y).getSeedState());
-                    if (Land.get(y).getSeedState() != 9){
-                        witherCheck = false;
-                    } else{
-                        witherCheck = true;
+                    tile.WitherCheck(Land, i);
+                    Land.get(i).setWateredToday(0);
+                    Land.get(i).setFertilizedToday(0);
+                    if (Land.get(i).getSeedInfo().getDaysLeft() > 0)
+                        Land.get(i).getSeedInfo().setDaysLeft(Land.get(i).getSeedInfo().getDaysLeft() - 1);
                     }
-            }
-            if (witherCheck == true){
-                EndOfGame = true;
-            }
-        } 
 
+                    if (witherCheck == true){
+                        EndOfGame = true;
+                    }
+                } 
         }while (EndOfGame != true); // Temporary Limiter for Game
         if (EndOfGame == true){
             System.out.println("Game over :(");
