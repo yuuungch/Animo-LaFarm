@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class ShovelTool {
+
     /**
      * Method to remove withered plants from tiles (to be moved to Shovel class)
      * 
