@@ -88,14 +88,12 @@ public class Farm {
 
             } else if (choice == 2) { // BUY
                 player.BuySeeds();
-                System.out.println("end b: " + EndOfGame);
                 // check if player has no more money, run out of seeds, or no more active crops
                 // then end of game
                 for (int y = 0; y < Land.size(); y++) {
                     if (Land.get(y).getSeedInfo().getCost() > player.getOcoins()
                             && Land.get(0).getSeedInfo().getCost() == 0) {
                         EndOfGame = true;
-                        System.out.println("end in: " + EndOfGame);
                     }
                 }
 
@@ -138,12 +136,6 @@ public class Farm {
                         } while (c2 < 1 && c2 > 9);
 
                     }
-                    // check if player has no more money, run out of seeds, or no more active crops
-                    // then end of game
-                    if (player.runOutOfSeeds() == true) {
-                        EndOfGame = true;
-                    }
-                    System.out.println("Seeds plant " + player.runOutOfSeeds());
                 }
 
             } else if (choice == 4) { // WATER

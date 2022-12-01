@@ -7,26 +7,46 @@ public class Player {
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
 
-    public Player(ArrayList<Integer> seedInv, Seeds seedData, Exp expData) {
-        this.seedInv = seedInv;
+    public Player() {
+        seedInv = new ArrayList<Integer>(8);
         Ocoins = 100;
-        this.seedData = seedData;
-        this.expData = expData;
+        seedData = new Seeds();
+        expData = new Exp();
     }
 
-    public void CheckExpBonus() {
-        expData.CheckStatus();
+    /**
+     * This method serves to initialize the seed inventory of the player
+     */
+    public void InitializeInventory() {
+        int i;
+
+        for (i = 0; i < 8; i++) {
+            seedInv.add(i, 0);
+        }
     }
 
+    /**
+     * Check Player's Seed Inventory
+     */
     public void CheckSeedInventory() {
-        System.out.println(seedInv);
+        int i;
+        Seeds printTemp = new Seeds();
+
+        System.out.print("Seed Names: [");
+
+        for (i = 1; i <= 7; i++) {
+            printTemp.Generate(i);
+            System.out.print(printTemp.getName() + ", ");
+        }
+        printTemp.Generate(i);
+        System.out.println(printTemp.getName() + "]");
+        System.out.println("Seed Inventory : " + seedInv);
     }
 
-    public void BuyMenu() {
-
-    }
-
-    public void BuySeeds(){
+    /**
+     * Menu for buying seeds
+     */
+    public void BuySeeds() {
         Scanner input = new Scanner(System.in);
         int choice, type, prev, quantity;
 
@@ -42,6 +62,8 @@ public class Player {
             System.out.println("--Fruit Trees--");
             System.out.println("[7] Mango");
             System.out.println("[8] Apple");
+            System.out.println("----------------");
+            System.out.println("[0] Exit");
 
             System.out.print("\nWhat seed would you like to buy: ");
             choice = input.nextInt();
@@ -51,52 +73,62 @@ public class Player {
             } else if (choice == 1) {
                 seedData.Generate(choice);
                 type = seedData.getType();
+                if (expData.getCostReduction() == 0)
+                    System.out.println(
+                            "The price of one seed of " + seedData.getName() + " is " + seedData.getCost() + ".");
+                else
+                    System.out.println(
+                            "The price of one seed of " + seedData.getName() + " is " + seedData.getCost() + " ("
+                                    + expData.getCostReduction() + " Objectcoins deduction already applied)");
                 System.out.print("How many would you like to buy? ");
                 quantity = input.nextInt();
-                if (Ocoins >= seedData.getCost() * quantity) {
+                if (Ocoins >= seedData.getCost() * quantity && quantity != 0) {
                     prev = seedInv.get(type - 1);
-                    seedInv.set(type - 1, prev + quantity); // tentative
-                    System.out.println("Purchase successful! You now have " + seedInv.get(type - 1) + " pieces of "
+                    seedInv.set(type - 1, prev + quantity);
+                    System.out.println("Purchase successful! You now have " + seedInv.get(type - 1) + " piece/s of "
                             + seedData.getName() + ".");
                     Ocoins -= (seedData.getCost() * quantity);
                     System.out.println("You now have " + Ocoins + " Objectcoins left.");
+                } else if (quantity == 0) {
+                    System.out.println("Please enter a value greater than 0 to buy.");
                 } else {
                     System.out.println("Sorry. You do not have enough Object Coins to purchase that many.");
                 }
             } else if (choice == 2) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 3) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 4) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 5) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 6) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 7) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
             } else if (choice == 8) {
-                seedData.Generate(choice);
+                // seedData.Generate(choice);
                 System.out.println("Out of stock. Sorry.");
+            } else if (choice != 0) {
+                System.out.println("Invalid choice. Try again.");
             }
-        } while (choice < 0 && choice > 9);
-    
-    }
-    public boolean runOutOfSeeds (ArrayList<Integer> seedInv){
-        return seedInv.isEmpty() || seedInv.stream()
-        .allMatch(seedInv.get(0)::equals);
+        } while (choice != 0);
     }
 
-    //plant seed (minus 1 on seed inventory)
-    public void PlantSeed (int seed) {
-        seedInv.set(seed-1, seedInv.get(seed)); // change thissss
-        System.out.println("You are now planting " + seedData.getName() + ".");
+    /**
+     * Method for checking if the seeds of the player has run out
+     * 
+
+     */
+    public boolean runOutOfSeeds (){
+        return seedInv.isEmpty() || seedInv.stream()
+        .allMatch(seedInv.get(0)::equals);
     }
 
     public ArrayList<Integer> getSeedInv() {
@@ -111,8 +143,8 @@ public class Player {
         return Ocoins;
     }
 
-    public void setOcoins(double d) {
-        Ocoins = d;
+    public void setOcoins(double ocoins) {
+        Ocoins = ocoins;
     }
 
     public Seeds getSeedData() {
