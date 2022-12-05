@@ -27,6 +27,20 @@ public class Tile {
     }
 
     /**
+     * Method to establish tile slots that contains rocks
+     * 
+     * @param array ArrayList of Tiles
+     */
+    public void SetRocks(ArrayList<Tile> array) {
+        array.get(9).setRockState(1);
+        array.get(38).setRockState(1);
+        array.get(20).setRockState(1);
+        array.get(14).setRockState(1);
+        array.get(35).setRockState(1);
+        array.get(41).setRockState(1);
+    }
+
+    /**
      * Method for planting a seed
      * 
      * @param array ArrayList of Tiles
@@ -61,9 +75,10 @@ public class Tile {
      * Checks for surrounding tiles (for tree seeds only)
      * 
      * 
-     * @param array
-     * @param x
-     * @return
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @return true if tree is plantable
+     * @return false if tree is not plantable
      */
     public boolean TreeCheck(ArrayList<Tile> array, int x) {
         boolean value = false;
@@ -91,8 +106,9 @@ public class Tile {
      * @param x     Tile Number
      */
     public void WitherCheck(ArrayList<Tile> array, int x) {
-        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0 )&&
-        (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
+        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0
+                && array.get(x).getSeedState() != 0) &&
+                (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
             System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
             array.get(x).setWitherState(true);
             array.get(x).setSeedState(9);
@@ -115,7 +131,7 @@ public class Tile {
 
         int produceNum; // Actual variable for produce
         double HarvestTotal, WaterBonusValue, FertilizerBonusValue, FinalHarvestPrice;
-        if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() < 9) { // Seed planted ranges from
+        if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() < 9) { // ed ranges from
                                                                                           // available ones
             // context rand.nextInt(origin, bound); origin is base, bound is peak minus 1
             // EX.
