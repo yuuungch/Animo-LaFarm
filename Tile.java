@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Tile {
     private int rockState; // 0 with rock, 1 no rock
@@ -32,12 +35,21 @@ public class Tile {
      * @param array ArrayList of Tiles
      */
     public void SetRocks(ArrayList<Tile> array) {
-        array.get(9).setRockState(1);
-        array.get(38).setRockState(1);
-        array.get(20).setRockState(1);
-        array.get(14).setRockState(1);
-        array.get(35).setRockState(1);
-        array.get(41).setRockState(1);
+        File filename = new File("Rocks.txt");
+        try (Scanner file = new Scanner(filename)) {
+            int index = file.nextInt();
+            array.get(index).setRockState(1);
+            System.out.println(index);
+            while (file.hasNextInt()) {
+                index = file.nextInt();
+                array.get(index).setRockState(1);
+                System.out.println(index);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error. Filename " + filename + " not found!");
+            e.printStackTrace();
+        }
+
     }
 
     /**
