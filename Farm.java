@@ -10,6 +10,7 @@ public class Farm {
     private WateringCan wateringCan;
     private Fertilizer fertilizer;
     private ShovelTool shovelTool;
+    private Pickaxe pick;
     private Play play;
 
     public Farm(Player player, Tile tile, Play play) {
@@ -21,6 +22,7 @@ public class Farm {
         wateringCan = new WateringCan();
         fertilizer = new Fertilizer();
         shovelTool = new ShovelTool();
+        pick = new Pickaxe();
         this.play = play;
     }
 
@@ -31,12 +33,16 @@ public class Farm {
         Scanner input = new Scanner(System.in);
         int choice, c1, c2, i, finalchoice;
         boolean EndOfGame = false;
-        boolean activeCropCheck = true;
         boolean witherCheck = false;
 
         player.InitializeInventory(); // Initialize Inventory
 
-        Land.add(0, tile); // set tile 1 with corresponding tile state
+        for (i = 0; i < 50; i++) {
+            Land.add(i, tile);
+        }
+
+        tile.SetRocks(Land); // place rocks
+
         do {
 
             player.getExpData().LevelUp(); // Validator
@@ -44,35 +50,32 @@ public class Farm {
             System.out.println("0coins: " + player.getOcoins());
             System.out.println("Today is day " + day);
 
-            // Seed Information on Tile 0; Only shows up when there is a plant present
-            if (Land.get(0).getSeedState() >= 1 && Land.get(0).getSeedState() <= 8) {
-                System.out.println("Incubation Period: " + Land.get(0).getSeedInfo().getHarvestTime());
-                System.out.println("Days left before Harvestable: " + Land.get(0).getSeedInfo().getDaysLeft());
-                System.out.println("Max Water Count: " + Land.get(0).getSeedInfo().getWater() + " ("
-                        + Land.get(0).getSeedInfo().getBonusWater() + ")");
-                System.out.println("Current Water Count: " + Land.get(0).getWaterCount());
-                System.out.println("Max Fertilize Count: " + Land.get(0).getSeedInfo().getFertilizer() + " ("
-                        + Land.get(0).getSeedInfo().getBonusFertilizer() + ")");
-                System.out.println("Current Fertilize Count: " + Land.get(0).getFertiCount());
-                System.out.println("--------------------------------------------------------------");
-            }
+            System.out.println("--------------------------------------------------------------");
 
             System.out.println("Options:");
-            System.out.println("[1] Plow Tile"); // in Tile class (To be moved to Hoe Class)
-            System.out.println("[2] Buy Seeds"); // in Player class
-            System.out.println("[3] Plant Seed"); // in Tile class
-            System.out.println("[4] Water Tile"); // in Tile class (To be moved to WateringCan Class)
-            System.out.println("[5] Fertilize Tile"); // in Tile class (To be moved to Fertilize Class)
-            System.out.println("[6] Harvest Tile"); // in Tile class
-            System.out.println("[7] Remove Withers"); // in Tile class (To be moved to Shovel Class)
-            System.out.println("[8] Check Player"); // in Player and Exp class
-            System.out.println("[9] Rank up"); // in Player and Seeds class
-            System.out.println("[0] Advance Day"); // here in Farm class
+            System.out.println("[1] Remove Rocks"); // in Pickaxe Class
+            System.out.println("[2] Plow Tile"); // in Tile class
+            System.out.println("[3] Buy Seeds"); // in Player class
+            System.out.println("[4] Plant Seed"); // in Tile class
+            System.out.println("[5] Water Tile"); // in Tile class
+            System.out.println("[6] Fertilize Tile"); // in Tile class
+            System.out.println("[7] Harvest Tile"); // in Tile class
+            System.out.println("[8] Remove Withers"); // in Tile class
+            System.out.println("[9] Check Player"); // in Player and Exp class
+            System.out.println("[10] Rank up"); // in Player and Seeds class
+            System.out.println("[11] Check Tiles"); // locally available
+            System.out.println("[0] Advance Day"); // Locally available
 
             System.out.print("\nChoice: ");
             choice = input.nextInt();
 
-            if (choice == 1) { // PLOW
+            if (choice == 1) { // REMOVE ROCKS
+                System.out.print("Enter tile number: ");
+                c1 = input.nextInt();
+
+                pick.RemoveRock(Land, c1, player);
+
+            } else if (choice == 2) { // PLOW
 
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
@@ -86,7 +89,7 @@ public class Farm {
                     }
                 }
 
-            } else if (choice == 2) { // BUY
+            } else if (choice == 3) { // BUY
                 player.BuySeeds();
                 // check if player has no more money, run out of seeds, or no more active crops
                 // then end of game
@@ -97,7 +100,7 @@ public class Farm {
                     }
                 }
 
-            } else if (choice == 3) { // PLANT
+            } else if (choice == 4) { // PLANT
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
@@ -138,7 +141,7 @@ public class Farm {
                     }
                 }
 
-            } else if (choice == 4) { // WATER
+            } else if (choice == 5) { // WATER
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
@@ -148,7 +151,7 @@ public class Farm {
                     wateringCan.Water(Land, c1);
                 }
 
-            } else if (choice == 5) { // FERTILIZE
+            } else if (choice == 6) { // FERTILIZE
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
@@ -158,7 +161,7 @@ public class Farm {
                     fertilizer.Fertilize(Land, c1, player);
                 }
 
-            } else if (choice == 6) { // HARVEST
+            } else if (choice == 7) { // HARVEST
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
@@ -168,24 +171,7 @@ public class Farm {
                     tile.Harvest(Land, c1, player);
                 }
 
-                /*
-                 * // check if there is no active growing crops
-                 * for (int y = 0; y < Land.size(); y++) {
-                 * if (Land.get(y).getSeedState() != 0) {
-                 * activeCropCheck = true;
-                 * } else {
-                 * activeCropCheck = false;
-                 * }
-                 * }
-                 * // check if player has no more money, run out of seeds, or no more active
-                 * crops
-                 * // then end of game
-                 * if (activeCropCheck == false) {
-                 * EndOfGame = true;
-                 * }
-                 */
-
-            } else if (choice == 7) { // REMOVE WITHER
+            } else if (choice == 8) { // REMOVE WITHER
                 System.out.print("Enter tile number: ");
                 c1 = input.nextInt();
 
@@ -195,19 +181,36 @@ public class Farm {
                     shovelTool.RemoveWither(Land, c1, player);
                 }
 
-            } else if (choice == 8) { // CHECK PLAYER
+            } else if (choice == 9) { // CHECK PLAYER
                 System.out.println("---------------------------------");
 
                 player.CheckSeedInventory();
                 System.out.println("Objectcoins Available: " + player.getOcoins());
                 System.out.println("---------------------------------");
                 player.getExpData().CheckStatus();
-            } else if (choice == 9) { // RANK UP
+            } else if (choice == 10) { // RANK UP
                 player.getExpData().Registration(player);
 
                 player.getSeedData().ExpChange(player.getExpData().getEarningBonus(),
                         player.getExpData().getCostReduction(), player.getExpData().getWaterBonus(),
                         player.getExpData().getFertiBonus());
+
+            } else if (choice == 11) {
+                System.out.print("Which tile do you wish to check? ");
+                c1 = input.nextInt();
+
+                if (choice >= 0 && choice <= 49) {
+                    System.out.println("Incubation Period: " + Land.get(c1).getSeedInfo().getHarvestTime());
+                    System.out.println("Days left before Harvestable: " + Land.get(c1).getSeedInfo().getDaysLeft());
+                    System.out.println("Max Water Count: " + Land.get(c1).getSeedInfo().getWater() + " ("
+                            + Land.get(c1).getSeedInfo().getBonusWater() + ")");
+                    System.out.println("Current Water Count: " + Land.get(c1).getWaterCount());
+                    System.out.println("Max Fertilize Count: " + Land.get(c1).getSeedInfo().getFertilizer() + " ("
+                            + Land.get(c1).getSeedInfo().getBonusFertilizer() + ")");
+                    System.out.println("Current Fertilize Count: " + Land.get(c1).getFertiCount());
+                } else {
+                    System.out.println("Invalid input. Please try again.");
+                }
 
             } else if (choice == 0) { // DAY CYCLE
                 day++;
