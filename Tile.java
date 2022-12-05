@@ -34,9 +34,19 @@ public class Tile {
      * @param y     Seed Type
      */
     public void Plant(ArrayList<Tile> array, int x, int y) {
+
+        boolean treePos = true;
+
+        if (x == 7 || x == 8) {
+            treePos = false;
+            treePos = TreeCheck(array, x);
+        }
+
         if (array.get(x).plowState == 0) { // UNPLOWED
             System.out.println("Cannot plant seed on chosen tile. Please plow the tile first.");
-        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1) { // SUCCESS
+        } else if (!treePos) {
+            System.out.println("Cannot plant tree seed on chosen tile.");
+        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1 && treePos) { // SUCCESS
             array.get(x).setSeedState(y);
             System.out.println(array.get(x).seedInfo.getName() + " seed planted Successfully! ");
         } else if (array.get(x).seedState != 0 && array.get(x).plowState == 1) { // ALREADY HAS A SEED
@@ -45,6 +55,32 @@ public class Tile {
             System.out.println(
                     "Sorry. There is still a withered plant present here in this tile. Please remove it first.");
         }
+    }
+
+    /**
+     * Checks for surrounding tiles (for tree seeds only)
+     * 
+     * 
+     * @param array
+     * @param x
+     * @return
+     */
+    public boolean TreeCheck(ArrayList<Tile> array, int x) {
+        boolean value = false;
+        if (x > 9 && x < 40) { // Top and bottom check
+            if (x % 10 != 0 && x + 1 % 10 != 0) { // left and right check
+                if (array.get(x - 11).seedState == 0 && array.get(x - 10).seedState == 0
+                        && array.get(x - 9).seedState == 0) { // top row check
+                    if (array.get(x - 1).seedState == 0 && array.get(x + 1).seedState == 0) { // mid row check
+                        if (array.get(x + 9).seedState == 0 && array.get(x + 10).seedState == 0
+                                && array.get(x + 11).seedState == 0) { // bottom row check
+                            value = true;
+                        }
+                    }
+                }
+            }
+        }
+        return value;
     }
 
     /**
