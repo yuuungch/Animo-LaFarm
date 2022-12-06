@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Tile {
     private int rockState; // 0 with rock, 1 no rock
@@ -27,6 +30,29 @@ public class Tile {
     }
 
     /**
+     * Method to establish tile slots that contains rocks
+     * 
+     * @param array ArrayList of Tiles
+     */
+    public void SetRocks(ArrayList<Tile> array) {
+        File filename = new File("Rocks.txt");
+        try (Scanner file = new Scanner(filename)) {
+            int index = file.nextInt();
+            array.get(index).setRockState(1);
+            System.out.println(index);
+            while (file.hasNextInt()) {
+                index = file.nextInt();
+                array.get(index).setRockState(1);
+                System.out.println(index);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error. Filename " + filename + " not found!");
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
      * Method for planting a seed
      * 
      * @param array ArrayList of Tiles
@@ -34,9 +60,19 @@ public class Tile {
      * @param y     Seed Type
      */
     public void Plant(ArrayList<Tile> array, int x, int y) {
+
+        boolean treePos = true;
+
+        if (x == 7 || x == 8) {
+            treePos = false;
+            treePos = TreeCheck(array, x);
+        }
+
         if (array.get(x).plowState == 0) { // UNPLOWED
             System.out.println("Cannot plant seed on chosen tile. Please plow the tile first.");
-        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1) { // SUCCESS
+        } else if (!treePos) {
+            System.out.println("Cannot plant tree seed on chosen tile.");
+        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1 && treePos) { // SUCCESS
             array.get(x).setSeedState(y);
             System.out.println(array.get(x).seedInfo.getName() + " seed planted Successfully! ");
         } else if (array.get(x).seedState != 0 && array.get(x).plowState == 1) { // ALREADY HAS A SEED
@@ -48,6 +84,33 @@ public class Tile {
     }
 
     /**
+     * Checks for surrounding tiles (for tree seeds only)
+     * 
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @return true if tree is plantable
+     * @return false if tree is not plantable
+     */
+    public boolean TreeCheck(ArrayList<Tile> array, int x) {
+        boolean value = false;
+        if (x > 9 && x < 40) { // Top and bottom check
+            if (x % 10 != 0 && x + 1 % 10 != 0) { // left and right check
+                if (array.get(x - 11).seedState == 0 && array.get(x - 10).seedState == 0
+                        && array.get(x - 9).seedState == 0) { // top row check
+                    if (array.get(x - 1).seedState == 0 && array.get(x + 1).seedState == 0) { // mid row check
+                        if (array.get(x + 9).seedState == 0 && array.get(x + 10).seedState == 0
+                                && array.get(x + 11).seedState == 0) { // bottom row check
+                            value = true;
+                        }
+                    }
+                }
+            }
+        }
+        return value;
+    }
+
+    /**
      * Method that regularly checks for a withered plant (This method stays here in
      * Tile, DO NOT MOVE TO SHOVEL)
      * 
@@ -55,8 +118,9 @@ public class Tile {
      * @param x     Tile Number
      */
     public void WitherCheck(ArrayList<Tile> array, int x) {
-        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0 )&&
-        (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
+        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0
+                && array.get(x).getSeedState() != 0) &&
+                (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
             System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
             array.get(x).setWitherState(true);
             array.get(x).setSeedState(9);
@@ -79,7 +143,7 @@ public class Tile {
 
         int produceNum; // Actual variable for produce
         double HarvestTotal, WaterBonusValue, FertilizerBonusValue, FinalHarvestPrice;
-        if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() < 9) { // Seed planted ranges from
+        if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() < 9) { // ed ranges from
                                                                                           // available ones
             // context rand.nextInt(origin, bound); origin is base, bound is peak minus 1
             // EX.

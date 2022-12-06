@@ -13,7 +13,7 @@ public class ShovelTool {
     public void RemoveWither(ArrayList<Tile> array, int x, Player p) {
         if (!array.get(x).getWitherState()) { // NO WITHERED PLANT
             System.out.println("Sorry. The current tile does not contain a withered plant.");
-        } else if (array.get(x).getWitherState() && p.getOcoins() > 0) { // SUCCESS
+        } else if (array.get(x).getWitherState() && p.getOcoins() >= 7) { // SUCCESS
             p.setOcoins(p.getOcoins() - 7);
             System.out.println("Withered plant successfully removed. Deducting 7 Objectcoins from inventory. "
                     + p.getOcoins() + " Objectcoins remaining.");
