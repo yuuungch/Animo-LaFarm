@@ -8,7 +8,7 @@ public class Exp {
     private int costReduction;
     private int waterBonus;
     private int fertiBonus;
-
+    private String status;
 
     public Exp() {
         exp = 0;
@@ -49,15 +49,22 @@ public class Exp {
     /**
      * Void Method to check player's experience stats and bonuses
      */
-    public void CheckStatus() {
-        System.out.println("EXP: " + exp);
-        System.out.println("EXP to next level: " + (level + 1) * 100);
-        System.out.println("Current Level: " + level);
-        System.out.println("Farmer Type:" + farmerType);
-        System.out.println("Bonus Earnings per Produce: " + earningBonus);
-        System.out.println("Seed Cost Reduction: " + costReduction);
-        System.out.println("Water Bonus Limit Increase: " + waterBonus);
-        System.out.println("Fertilizer Bonus Limit Increase: " + fertiBonus);
+    public String CheckStatus() {
+        // System.out.println("EXP: " + exp);
+        // System.out.println("EXP to next level: " + (level + 1) * 100);
+        // System.out.println("Current Level: " + level);
+        // System.out.println("Farmer Type:" + farmerType);
+        // System.out.println("Bonus Earnings per Produce: " + earningBonus);
+        // System.out.println("Seed Cost Reduction: " + costReduction);
+        // System.out.println("Water Bonus Limit Increase: " + waterBonus);
+        // System.out.println("Ferti'lizer Bonus Limit Increase: " + fertiBonus);
+        status = "\nEXP: " + exp + "\nEXP to next level: " + (level + 1) * 100 + 
+        "\nCurrent Level: " + level + "\nFarmer Type:" + farmerType + 
+        "\nBonus Earnings per Produce: " + earningBonus +
+        "\nSeed Cost Reduction: " + costReduction +
+        "\nWater Bonus Limit Increase: " + waterBonus +
+        "\nFertilizer Bonus Limit Increase: " + fertiBonus;
+        return status;
     }
 
     /**

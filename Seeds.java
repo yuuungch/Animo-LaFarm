@@ -12,8 +12,10 @@ public class Seeds {
     private int cost;
     private int baseSell;
     private double expYield;
+    private String desc;
+    private int num;
 
-    public Seeds() {
+    public Seeds(int num) {
         type = 0;
         name = "";
         harvestTime = 0;
@@ -27,6 +29,8 @@ public class Seeds {
         cost = 0;
         baseSell = 0;
         expYield = 0;
+        desc = "";
+        this.num = num;
     }
 
     /**
@@ -58,9 +62,10 @@ public class Seeds {
             cost = 0;
             baseSell = 0;
             expYield = 0;
+            desc = "";
         } else if (x == 1) { // TURNIP ROOT CROP
             type = 1;
-            name = "Turnip (root crop)";
+            name = "Turnip (Root Crop)";
             harvestTime = 2;
             daysLeft = 2;
             water = 1;
@@ -72,6 +77,7 @@ public class Seeds {
             cost = 5;
             baseSell = 6;
             expYield = 5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-2\nSeed Cost:\t\t5\nBase Selling Price per Piece:\t6\nExp Yield:\t\t5";
         } else if (x == 2) {
             type = 2;
             name = "Carrot";
@@ -86,6 +92,7 @@ public class Seeds {
             cost = 10;
             baseSell = 9;
             expYield = 7.5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-2\nSeed Cost:\t\t10\nBase Selling Price per Piece:\t9\nExp Yield:\t\t7.5";
         } else if (x == 3) {
             type = 3;
             name = "Potato";
@@ -100,6 +107,7 @@ public class Seeds {
             cost = 20;
             baseSell = 3;
             expYield = 12.5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-10\nSeed Cost:\t\t20\nBase Selling Price per Piece:\t3\nExp Yield:\t\t12.5";
         } else if (x == 4) {
             type = 4;
             name = "Rose";
@@ -114,6 +122,7 @@ public class Seeds {
             cost = 10;
             baseSell = 5;
             expYield = 2.5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t5\nBase Selling Price per Piece:\t5\nExp Yield:\t\t2.5";
         } else if (x == 5) {
             type = 5;
             name = "Turnip (Flower)";
@@ -128,6 +137,7 @@ public class Seeds {
             cost = 10;
             baseSell = 19;
             expYield = 5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t10\nBase Selling Price per Piece:\t9\nExp Yield:\t\t5";
         } else if (x == 6) {
             type = 6;
             name = "Sunflower";
@@ -142,6 +152,7 @@ public class Seeds {
             cost = 20;
             baseSell = 19;
             expYield = 7.5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t20\nBase Selling Price per Piece:\t19\nExp Yield:\t\t7.5";
         } else if (x == 7) {
             type = 7;
             name = "Mango";
@@ -156,6 +167,7 @@ public class Seeds {
             cost = 100;
             baseSell = 8;
             expYield = 25;
+            desc = "Crop Type:\t\tFruit Tree\nProducts Produced:\t5-15\nSeed Cost:\t\t100\nBase Selling Price per Piece:\t8\nExp Yield:\t\t25";
         } else if (x == 8) {
             type = 8;
             name = "Apple";
@@ -170,6 +182,7 @@ public class Seeds {
             cost = 200;
             baseSell = 5;
             expYield = 25;
+            desc = "Crop Type:\t\tFruit Tree\nProducts Produced:\t10-15\nSeed Cost:\t\t200\nBase Selling Price per Piece:\t5\nExp Yield:\t\t25";
         }
     }
 
@@ -294,4 +307,12 @@ public class Seeds {
         this.expYield = expYield;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+    
 }

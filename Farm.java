@@ -11,9 +11,10 @@ public class Farm {
     private Fertilizer fertilizer;
     private ShovelTool shovelTool;
     private Play play;
+    private String playerInfo;
 
-    public Farm(Player player, Tile tile, Play play) {
-        Land = new ArrayList<Tile>();
+    public Farm(ArrayList<Tile> Land,Player player, Tile tile, Play play) {
+        this.Land = Land;
         this.player = player;
         this.tile = tile;
         day = 1;
@@ -241,5 +242,13 @@ public class Farm {
                 System.exit(0);
             }
         }
+    }
+
+    public String getCurrentPlayerInfo(){
+        //generate info
+        playerInfo = "---------------------------------"+ "\nObjectcoins Available: "
+        + player.getOcoins() + player.getExpData().CheckStatus()
+        + "\n" + "---------------------------------"+ "\n";
+        return playerInfo;
     }
 }
