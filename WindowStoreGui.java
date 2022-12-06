@@ -51,7 +51,7 @@ public class WindowStoreGui extends JFrame{
         setResizable(false);
 
         //set default close
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     //store elements

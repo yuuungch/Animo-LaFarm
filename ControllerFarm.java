@@ -12,9 +12,12 @@ public class ControllerFarm implements ActionListener, DocumentListener{
     private Player player;
     private WindowFarmGui farmGui;
     private Farm farm;
-    private WindowStoreGui storeGui;
+    //private WindowStoreGui storeGui;
     private ControllerStore storeController;
     private WindowHelpGui helpGui;
+    private WindowAskGui askGui;
+    private String chosenTile; 
+    private int chosenTileNum;
     //private ControllerHelp helpController;
 
     //contstructor
@@ -42,15 +45,21 @@ public class ControllerFarm implements ActionListener, DocumentListener{
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if (e.getActionCommand().equals("btnStore")){
-            storeGui = new WindowStoreGui(seedInfo, Land, store);
+            WindowStoreGui storeGui = new WindowStoreGui(seedInfo, Land, store);
             storeController = new ControllerStore(storeGui, store, player);
             updatePlayer();
-        }else if (e.getActionCommand().equals("btnHelp")){
-            helpGui = new WindowHelpGui();
+        }else if (e.getActionCommand().equals("Help")){
+            System.out.println("working");
+            //helpGui = new WindowHelpGui();
+            helpGui.createForm();
+            System.out.println("working");
             //helpController = new ControllerHelp();
             updatePlayer();
         }else if (e.getActionCommand().equals("btnPlow")){
-            store.nextSeed();
+            askGui = new WindowAskGui();
+            chosenTile = askGui.getTileNum();
+            chosenTileNum = Integer.valueOf(chosenTile);
+            System.out.print(chosenTileNum);
             updatePlayer();
         }
          

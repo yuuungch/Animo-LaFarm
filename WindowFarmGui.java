@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class WindowFarmGui extends JFrame{
     private JLabel lblTile;
@@ -18,14 +19,28 @@ public class WindowFarmGui extends JFrame{
     private JButton btnShovel;
     private JTextArea text;
     private Farm farm;
+    private WindowAskGui askGui;
+    private String chosenTile; 
+    private int chosenTileNum;
+    private WindowStoreGui storeGui;
+    private Seeds seedInfo;
+    private ArrayList<Tile> Land;
+    private Store store;
+    private ControllerStore storeController;
+    private Player player;
 
     //constructor
-    public WindowFarmGui(Farm farm){
+    public WindowFarmGui(Farm farm, Seeds seedInfo, ArrayList<Tile> Land,
+    Store store, Player player){
         //add window title
         super("Animo LaFarm");
 
-        //Player
+        //this
         this.farm = farm;
+        this.seedInfo = seedInfo;
+        this.Land = Land;
+        this.store = store;
+        this.player = player;
 
         //set window layout
         setLayout(new BorderLayout());
@@ -60,9 +75,42 @@ public class WindowFarmGui extends JFrame{
 
         //add button Store to panel
         btnStore = new JButton("Store");
+        btnStore.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+                storeGui = new WindowStoreGui(seedInfo, Land, store);
+                storeController = new ControllerStore(storeGui, store, player);
+                updatePlayer();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }});
         panelSouth.add(btnStore);
         //add button Help to panel
-        btnHelp = new JButton("Clear");
+        btnHelp = new JButton("Help");
         panelSouth.add(btnHelp);
 
         //add panel to frame 
@@ -114,6 +162,44 @@ public class WindowFarmGui extends JFrame{
         btnFertilizer = new JButton("Fertilizer");
         btnPickaxe = new JButton("Pickaxe");
         btnShovel = new JButton("Shovel");
+
+        //mouselistener for plow
+        btnPlow.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+                askGui = new WindowAskGui();
+                chosenTile = askGui.getTileNum();
+                chosenTileNum = Integer.valueOf(chosenTile);
+                System.out.print(chosenTileNum);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
 
         //add button to panel
         panelEast.add(btnPlow);
@@ -175,6 +261,10 @@ public class WindowFarmGui extends JFrame{
         
         //add panel to frame
         this.add(panelCenter, BorderLayout.CENTER);
+    }
+    //update the player info
+    public void updatePlayer(){
+        setPlayerInfo(farm.getCurrentPlayerInfo());
     }
     //set player info
     public void setPlayerInfo(String playerInfo){

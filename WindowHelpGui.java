@@ -22,7 +22,7 @@ public class WindowHelpGui extends JFrame {
         createForm();
     }
 
-    private void createForm() {
+    void createForm() {
         //set resizable 
         setResizable(false);
 
@@ -33,7 +33,7 @@ public class WindowHelpGui extends JFrame {
         setPreferredSize(new Dimension(800, 600));
 
         //set default close
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // OPTIONAL - Set form on top of everything.
         setAlwaysOnTop(true);

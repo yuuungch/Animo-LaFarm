@@ -1,72 +1,123 @@
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
 
-public class WindowAskGui extends JFrame implements ActionListener{
-    private JTextField tileInput;
-    private JLabel lblSuccess;
-    private JLabel lblTile;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+import java.text.CollationElementIterator;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class WindowAskGui extends JFrame {
+    //create buttons as we need to use it later on
     private JButton btnConfirm;
+    //create textfield
+    private JTextField tfTileNum;
+    private String chosenTile; 
+    private int chosenTileNum;
+
     public WindowAskGui(){
-        super();
-        //JFrame frame = new JFrame();
+        super("Selecting Tile");
+        setLayout( new BorderLayout());
 
-        setLayout(new BorderLayout());
-        //set size of window
-        setSize(350,200);
-        
-        //add elements
-        askUser();
+        //Set size of our window
+        setSize(350, 200);
 
-        //set visibility
+        //add elements before visible
+        init();
+
+        //explicityle set the visibility to true
         setVisible(true);
-        
-        //set dafault close
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //set resizable to false to prevent users from resizing the window
+        setResizable(false);
+
+        //set default: hide the frame, don't end the program
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
     }
 
-    public void askUser(){
-        JPanel panel = new JPanel();
+    //we will layout the elements/components here
+    private void init() {
+        //south panel
+        JPanel panelSouth = new JPanel();
+        //specify the layout of the panel to make it borderlayout
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.GRAY);
 
-        //set layout
-        //panel.setLayout(null);
-
-        //JLabels
-        lblTile = new JLabel("Tile");
-        lblTile.setBounds(10,20,80,25);
-        
-        //add label to panel
-        panel.add(lblTile);
-
-        //JtextArea
-        tileInput = new JTextField(20);
-        tileInput.setBounds(100,20,165,25);
-
-        //add text area to panel
-        panel.add(tileInput);
-
-        //button
-        btnConfirm = new JButton("Confirm");
-        btnConfirm.setBounds(10, 80, 80, 25);
-        btnConfirm.addActionListener(new WindowAskGui());
-        
         //add button to panel
-        panel.add(btnConfirm);
+        btnConfirm = new JButton("Confirm");
+        btnConfirm.addMouseListener(new MouseListener(){
 
-        //success
-        lblSuccess = new JLabel("");
-        lblSuccess.setBounds(10, 110, 300, 25);
-        panel.add(lblSuccess);
-        this.add(panel);
-        
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+                chosenTile = getTileNum();
+                chosenTileNum = Integer.valueOf(chosenTile);
+                System.out.println(chosenTile);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }});
+        panelSouth.add(btnConfirm);
+
+        //add panel to frame
+        this.add(panelSouth, BorderLayout.SOUTH);
+
+        //north (name) subpanel inside the Center panel
+        JPanel panelCenter = new JPanel();
+        panelCenter.setBackground(Color.LIGHT_GRAY);
+
+        //add label to subpanel
+        JLabel lblAsk = new JLabel("Please enter tile number: ");
+        lblAsk.setForeground(Color.BLACK);
+
+        //add label to subpanel
+        panelCenter.add(lblAsk);
+
+        //add textfield
+        tfTileNum = new JTextField(10);
+
+        //add textfield to panel 
+        panelCenter.add(tfTileNum);
+
+        //add namepanel to center panel
+        this.add(panelCenter, BorderLayout.CENTER);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String tileChosen = tileInput.getText();
-        System.out.println("tile" + tileChosen);
-        
+    //add listeners to the buttons to know what the buttons are doing
+    public void setActionListener(ActionListener listener){
+        btnConfirm.addActionListener(listener);
+    }
+
+    //add docs listeners to texts
+    public void setDocumentsListener(DocumentListener listener){
+        tfTileNum.getDocument().addDocumentListener(listener);
+    }
+
+
+    public String getTileNum(){
+        return tfTileNum.getText();
     }
 }
