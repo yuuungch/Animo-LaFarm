@@ -15,6 +15,9 @@ public class Tile {
     private int fertilizedToday; // 0 if not yet, 1 if done already.
     private Seeds seedInfo; // contains information regarding which seed
     private Exp playerExp;
+    private String output;
+    private String outString;
+    private String finalOutput;
 
     public Tile(Seeds seedInfo, Exp playerExp) {
         rockState = 1;
@@ -69,18 +72,19 @@ public class Tile {
         }
 
         if (array.get(x).plowState == 0) { // UNPLOWED
-            System.out.println("Cannot plant seed on chosen tile. Please plow the tile first.");
+            output = "Cannot plant seed on chosen tile. Please plow the tile first.";
         } else if (!treePos) {
-            System.out.println("Cannot plant tree seed on chosen tile.");
+            output = "Cannot plant tree seed on chosen tile.";
         } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1 && treePos) { // SUCCESS
             array.get(x).setSeedState(y);
-            System.out.println(array.get(x).seedInfo.getName() + " seed planted Successfully! ");
+            output = array.get(x).seedInfo.getName() + " seed planted Successfully! ";
         } else if (array.get(x).seedState != 0 && array.get(x).plowState == 1) { // ALREADY HAS A SEED
-            System.out.println("Sorry. This tile already has a seed planted. ");
+            output = "Sorry. This tile already has a seed planted. ";
         } else if (array.get(x).seedState == 9) { // WITHERED PLANT PRESENT
-            System.out.println(
-                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.");
+            output =
+                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.";
         }
+        WindowOutputGui outputGui = new WindowOutputGui(output);
     }
 
     /**
@@ -160,35 +164,37 @@ public class Tile {
 
             FinalHarvestPrice = HarvestTotal + WaterBonusValue + FertilizerBonusValue;
 
-            System.out.println(
-                    "Yay! you have harvested " + produceNum + " pieces of " + seedInfo.getName() + ".");
+            output = "Yay! you have harvested " + produceNum + " pieces of " + seedInfo.getName() + ".";
+            WindowOutputGui outputGui = new WindowOutputGui(output);
 
             // PROFIT BREAKDOWN
 
-            System.out.println("Profit Breakdown:");
-            System.out.println("-----------------------");
-            System.out.println("Total Number of Harvest: " + produceNum);
-            System.out.println("Price for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell());
-            System.out.println("Times Plant was Watered: " + array.get(x).getWaterCount());
-            System.out.println("Water Bonus: " + WaterBonusValue);
-            System.out.println("Times Plant was Fertilized: " + array.get(x).getFertiCount());
-            System.out.println("Fertilizer Bonus: " + FertilizerBonusValue);
-
             // FLOWER MULTIPLIER BONUS
             if (array.get(x).seedInfo.getType() >= 4 && array.get(x).seedInfo.getType() <= 6) {
-                System.out.println("Flower Multiplier Bonus: 1.1");
-                FinalHarvestPrice *= 1.1;
+                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
+                            "Total Number of Harvest: " + produceNum + 
+                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                            "\nWater Bonus: " + WaterBonusValue +
+                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                            "\nFertilizer Bonus: " + FertilizerBonusValue +
+                            "Flower Multiplier Bonus: 1.1";
+                            FinalHarvestPrice *= 1.1;
+            } else {
+                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
+                            "Total Number of Harvest: " + produceNum + 
+                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                            "\nWater Bonus: " + WaterBonusValue +
+                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                            "\nFertilizer Bonus: " + FertilizerBonusValue;                                  
             }
-
-            System.out.println("Total Profit: " + FinalHarvestPrice); // FINAL PROFIT
-
-            System.out.println("-------------------------");
-
             p.setOcoins(p.getOcoins() + FinalHarvestPrice);
-
-            System.out.println("Added " + FinalHarvestPrice + " to your inventory. Total of " + p.getOcoins()
-                    + " Objectcoins in inventory.");
-
+            finalOutput = outString + "\nTotal Profit: " + FinalHarvestPrice + // FINAL PROFIT 
+                                      "\n-------------------------" +
+                                      "\nAdded " + FinalHarvestPrice + " to your inventory. Total of " + 
+                                      p.getOcoins() + " Objectcoins in inventory.";
+            WindowResultGui resultGui = new WindowResultGui(finalOutput);
             playerExp.GainExp(array.get(x).seedInfo.getExpYield() * produceNum, array.get(x).playerExp);
 
             // RESET TO DEFAULT

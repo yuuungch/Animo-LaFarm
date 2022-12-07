@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class WindowStoreGui extends JFrame{
     //create buttons
@@ -20,9 +22,10 @@ public class WindowStoreGui extends JFrame{
     // land tile
     private ArrayList<Tile> Land;
     private Store store;
+    private Farm farm;
 
     //constructor
-    public WindowStoreGui(Seeds seedInfo, ArrayList<Tile> Land, Store store){
+    public WindowStoreGui(Seeds seedInfo, ArrayList<Tile> Land, Store store, Farm farm){
         //title of the window
         super("Store");
 
@@ -34,6 +37,9 @@ public class WindowStoreGui extends JFrame{
 
         //store
         this.store = store;
+
+        //farm
+        this.farm = farm;
 
         //set Layout
         setLayout(new BorderLayout());
@@ -63,7 +69,40 @@ public class WindowStoreGui extends JFrame{
         panelSouth.setBackground(Color.decode("#3d251e"));
         //add button to panel
         btnBuy = new JButton("BUY");
+        btnBuy.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+                farm.buySeeds();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }});
         panelSouth.add(btnBuy);
+
+
         //add panel to frame
         this.add(panelSouth, BorderLayout.SOUTH);
        

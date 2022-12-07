@@ -7,17 +7,35 @@ import java.awt.event.ActionListener;
 import java.text.CollationElementIterator;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
-public class WindowAskGui extends JFrame {
+public class WindowAskWitherGui extends JFrame {
     //create buttons as we need to use it later on
     private JButton btnConfirm;
     //create textfield
     private JTextField tfTileNum;
     private String chosenTile; 
     private int chosenTileNum;
+    private ControllerFarm farmControl;
+    private WindowErrorGui errorGui;
+    private ArrayList<Tile> Land;
+    private PlowTool plowTool;  
+    private Farm farm;
+    private ShovelTool shovelTool;
+    private Player player;
 
-    public WindowAskGui(){
+    public WindowAskWitherGui(ArrayList<Tile> Land, PlowTool plowTool, Farm farm,
+    ShovelTool fertilizer, Player player){
         super("Selecting Tile");
+
+        //this
+        this.Land = Land;
+        this.plowTool = plowTool;
+        this.farm = farm;
+        this.shovelTool = shovelTool;
+        this.player = player;
+
+        //set layout
         setLayout( new BorderLayout());
 
         //Set size of our window
@@ -54,7 +72,14 @@ public class WindowAskGui extends JFrame {
                 // TODO Auto-generated method stub
                 chosenTile = getTileNum();
                 chosenTileNum = Integer.valueOf(chosenTile);
-                System.out.println(chosenTile);
+                farmControl = new ControllerFarm(farm, Land, plowTool);
+                if (chosenTileNum < 0 || chosenTileNum >= Land.size()) {
+                    tfTileNum.setText(null);
+                    farmControl.error();
+                }else if(chosenTileNum >= 0 && chosenTileNum < Land.size()){
+                    shovelTool.RemoveWither(Land, chosenTileNum, player);
+                }
+                dispose();
             }
 
             @Override
@@ -116,8 +141,11 @@ public class WindowAskGui extends JFrame {
         tfTileNum.getDocument().addDocumentListener(listener);
     }
 
-
     public String getTileNum(){
         return tfTileNum.getText();
     }
+
+    // public void setTileNum(JTextField tfTileNum){
+        // tfTileNu
+    // }
 }

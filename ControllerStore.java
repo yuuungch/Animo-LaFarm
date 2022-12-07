@@ -33,8 +33,6 @@ public class ControllerStore implements ActionListener, DocumentListener{
         // TODO Auto-generated method stub
         if (e.getActionCommand().equals("BUY")){
             player.BuySeeds();
-            // store.setCurrentSeedName(storeGui.getSeedName());
-            // store.setCurrentSeedDesc(storeGui.getSeedDesc());
         }else if (e.getActionCommand().equals("<")){
             store.prevSeed();
             updateView();

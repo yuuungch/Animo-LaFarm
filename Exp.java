@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Exp {
     private double exp;
@@ -9,6 +10,9 @@ public class Exp {
     private int waterBonus;
     private int fertiBonus;
     private String status;
+    private String output;
+    private double regcap;
+    private String infoQ;
 
     public Exp() {
         exp = 0;
@@ -18,6 +22,7 @@ public class Exp {
         costReduction = 0;
         waterBonus = 0;
         fertiBonus = 0;
+        regcap = 0;
     }
 
     /**
@@ -25,13 +30,13 @@ public class Exp {
      * 
      * @param gain    is the gained experience points
      * @param current the Exp class of the player
+     * DEBUG use this to update player info
      */
     public void GainExp(double gain, Exp current) {
         current.setExp(current.getExp() + gain);
-        System.out.println(
-                "You have gained " + gain + " experience points! (" + current.getExp() + " / "
-                        + (current.getLevel() + 1) * 100 + ")");
-
+        output = "You have gained " + gain + " experience points! (" + current.getExp() + " / "
+                        + (current.getLevel() + 1) * 100 + ")";
+        WindowOutputGui outputGui = new WindowOutputGui(output);
         LevelUp();
     }
 
@@ -42,7 +47,8 @@ public class Exp {
     public void LevelUp() {
         if (exp / 100 >= level + 1) {
             level += 1;
-            System.out.println("Congratulations! You reached level " + level + ".");
+            output = "Congratulations! You reached level " + level + ".";
+            WindowOutputGui outputGui = new WindowOutputGui(output);
         }
     }
 
@@ -50,14 +56,6 @@ public class Exp {
      * Void Method to check player's experience stats and bonuses
      */
     public String CheckStatus() {
-        // System.out.println("EXP: " + exp);
-        // System.out.println("EXP to next level: " + (level + 1) * 100);
-        // System.out.println("Current Level: " + level);
-        // System.out.println("Farmer Type:" + farmerType);
-        // System.out.println("Bonus Earnings per Produce: " + earningBonus);
-        // System.out.println("Seed Cost Reduction: " + costReduction);
-        // System.out.println("Water Bonus Limit Increase: " + waterBonus);
-        // System.out.println("Ferti'lizer Bonus Limit Increase: " + fertiBonus);
         status = "\nEXP: " + exp + "\nEXP to next level: " + (level + 1) * 100 + 
         "\nCurrent Level: " + level + "\nFarmer Type:" + farmerType + 
         "\nBonus Earnings per Produce: " + earningBonus +
@@ -77,29 +75,26 @@ public class Exp {
      *                 to the next type
      */
     public void RegMenu(String nextType, Player p, double regcap) {
-        Scanner input = new Scanner(System.in);
         int choice;
-
         do {
-            System.out.println("Your current status is " + farmerType + ".");
-            System.out.println("Next status is " + nextType + ". Registration fee is " + regcap + ".\n");
-            System.out.println("[1] Yes");
-            System.out.println("[2] No");
-            System.out.print("Would you like to register as a " + nextType + "? ");
-            choice = input.nextInt();
+            infoQ = "Your current status is " + farmerType + "." +
+                   "Next status is " + nextType + ". Registration fee is " + regcap + ".\n"
+                   +"[1] Yes\n" +"[2] No\n" + "\nWould you like to register as a " + nextType + "? ";
+            WindowAskExpGui askExpGui = new WindowAskExpGui(infoQ);
+            choice = askExpGui.getChoice();
 
             if (choice == 1 && p.getOcoins() >= regcap) { // SUCCESSFUL
                 farmerType = nextType;
-                System.out.println("Congratulations! You have successfully registered as a " + farmerType + ".");
-
                 p.setOcoins(p.getOcoins() - regcap);
-                System.out.println("Deducted " + regcap + " Objectcoins for registration. " + p.getOcoins()
-                        + " Objectcoins remaining.");
+                output = "Congratulations! You have successfully registered as a " + farmerType + "."
+                +"\nDeducted " + regcap + " Objectcoins for registration. " + p.getOcoins()
+                        + " Objectcoins remaining.";
             } else if (choice == 1 && p.getOcoins() < regcap) { // NOT ENOUGH OBJECTCOINS
-                System.out.println("Sorry. You do not have enough Objectcoins to register as a " + nextType + ".");
+                output = "Sorry. You do not have enough Objectcoins to register as a " + nextType + ".";
             } else if (choice == 2) { // REJECTION
-                System.out.println("Okay. Status remains at " + farmerType + ".");
+                output = "Okay. Status remains at " + farmerType + ".";
             }
+            WindowOutputGui outputGui = new WindowOutputGui(output);
 
         } while (choice < 1 && choice > 2);
     }
@@ -124,12 +119,11 @@ public class Exp {
             waterBonus = 2;
             fertiBonus = 1;
         }
+        output = "Respective Bonuses Increased:\n" + "Earning Bonus: " + earningBonus +
+                 "\nCost Reduction: " + costReduction + "\nWater Bonus: " + waterBonus +
+                 "\nFertilizing Bonus: " + fertiBonus;
 
-        System.out.println("Respective Bonuses Increased:");
-        System.out.println("Earning Bonus: " + earningBonus);
-        System.out.println("Cost Reduction: " + costReduction);
-        System.out.println("Water Bonus: " + waterBonus);
-        System.out.println("Fertilizing Bonus: " + fertiBonus);
+        WindowResultGui resultGui = new WindowResultGui(output);
     }
 
     /**
@@ -140,20 +134,26 @@ public class Exp {
      */
     public void Registration(Player p) {
         if (exp < 5 && farmerType.equals("Farmer")) { // DOES NOT MEET THE BASE REQUIREMENTS
-            System.out.println("You do not yet meet the requirements to register as a Registered Farmer.");
+            output = "You do not yet meet the requirements to register as a Registered Farmer.";
         } else if (exp >= 5 && farmerType.equals("Farmer")) {
-            RegMenu("Registered Farmer", p, 200);
+            regcap = 200;
+            RegMenu("Registered Farmer", p, regcap);
             Stats();
         } else if (exp < 10 && farmerType.equals("Registered Farmer")) { // DOES NOT MEET THE BASE REQUIREMENTS
-            System.out.println("You do not yet meet the requirements to register as a Distinguished Farmer.");
+            output = "You do not yet meet the requirements to register as a Distinguished Farmer.";
         } else if (exp >= 10 && farmerType.equals("Registered Farmer")) {
-            RegMenu("Distinguished Farmer", p, 300);
+            regcap = 300;
+            RegMenu("Distinguished Farmer", p, regcap);
             Stats();
         } else if (exp < 15 && farmerType.equals("Distinguished Farmer")) { // DOES NOT MEET THE BASE REQUIREMENTS
-            System.out.println("You do not yet meet the requirements to register as a Legendary Farmer.");
+            output = "You do not yet meet the requirements to register as a Legendary Farmer.";
         } else if (exp >= 15 && farmerType.equals("Distinguished Farmer")) {
-            RegMenu("Legendary Farmer", p, 400);
+            regcap = 400;
+            RegMenu("Legendary Farmer", p, regcap);
             Stats();
+        }
+        if (output != null){
+            WindowOutputGui outputGui = new WindowOutputGui(output);
         }
     }
 
@@ -213,6 +213,10 @@ public class Exp {
 
     public void setFertiBonus(int fertiBonus) {
         this.fertiBonus = fertiBonus;
+    }
+
+    public double getRegcap() {
+        return regcap;
     }
 
 }

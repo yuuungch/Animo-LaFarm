@@ -7,13 +7,18 @@ public class Player {
     private Seeds seedData; // Seed Database
     private Exp expData; // Exp Database
     private Store store;
+    private String output;
+    private String output2;
+    private String temp;
+    private String tempp;
 
     public Player(Store store) {
         seedInv = new ArrayList<Integer>(8);
         Ocoins = 100;
         seedData = new Seeds(0);
-        expData = new Exp();
         this.store = store;
+        expData = new Exp();
+        tempp = "";
     }
 
     /**
@@ -34,15 +39,15 @@ public class Player {
         int i;
         Seeds printTemp = new Seeds(0);
 
-        System.out.print("Seed Names: [");
+        temp = "Seed Names: [";
 
         for (i = 1; i <= 7; i++) {
             printTemp.Generate(i);
-            System.out.print(printTemp.getName() + ", ");
+            tempp = tempp + printTemp.getName() + ", ";
         }
         printTemp.Generate(i);
-        System.out.println(printTemp.getName() + "]");
-        System.out.println("Seed Inventory : " + seedInv);
+        output = temp + tempp + printTemp.getName() + "]";
+        output2 = "Seed Inventory : " + seedInv;
     }
 
     /**
@@ -107,5 +112,15 @@ public class Player {
     public void setExpData(Exp expData) {
         this.expData = expData;
     }
+
+    public String getOutput() {
+        return output;
+    }
+
+    public String getOutput2() {
+        return output2;
+    }
+
+    
 
 }
