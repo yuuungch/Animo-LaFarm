@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public class Fertilizer {
-        private String output;
+    private String output;
+
     /**
      * Method to Fertilize a Tile (to be moved to Fertilize class)
      * 
@@ -11,16 +12,20 @@ public class Fertilizer {
      *              of the player
      */
     public void Fertilize(ArrayList<Tile> array, int x, Player p) {
-        if (array.get(x).getPlowState() == 0) { // NOT YET PLOWED
+        if (array.get(x).getRockState() == 1) {
+            output = "Please remove rock first before fertilizing!";
+        } else if (array.get(x).getPlowState() == 0) { // NOT YET PLOWED
             output = "Please plow this tile first before fertilizing!";
         } else if (array.get(x).getSeedState() == 0) { // NO SEED PRESENT
             output = "Please plant a seed onto this tile first before fertilizing!";
+
+        } else if (p.getOcoins() < 10) {
+            output = "Sorry. You do not have enough Objectcoins to fertilize this tile.";
         } else if (array.get(x).getFertiCount() <= array.get(x).getSeedInfo().getFertilizer()
                 || array.get(x).getFertiCount() < array.get(x).getSeedInfo().getBonusFertilizer()
                         + array.get(x).getPlayerExp().getFertiBonus()
-                        && array.get(x).getSeedInfo().getFertilizer()
-                                + array.get(x).getSeedInfo().getBonusFertilizer() != 0
-                        && array.get(x).getFertilizedToday() == 0) { // TLDR: if fertilize count does not yet exceed the
+                        && array.get(x).getFertilizedToday() == 0 && p.getOcoins() >= 10) { // TLDR: if fertilize count
+                                                                                            // does not yet exceed the
             // maximum number of fertilizing and has not yet been
             // fertilized today
             array.get(x).setFertiCount(array.get(x).getFertiCount() + 1);

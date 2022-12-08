@@ -41,13 +41,20 @@ public class Player {
 
         temp = "Seed Names: [";
 
-        for (i = 1; i <= 7; i++) {
+        if (tempp == "") {
+            for (i = 1; i <= 7; i++) {
+                printTemp.Generate(i);
+                tempp = tempp + printTemp.getName() + ", ";
+            }
             printTemp.Generate(i);
-            tempp = tempp + printTemp.getName() + ", ";
+            output = temp + tempp + printTemp.getName() + "]";
         }
-        printTemp.Generate(i);
-        output = temp + tempp + printTemp.getName() + "]";
         output2 = "Seed Inventory : " + seedInv;
+    }
+
+    public void ClearOutputs() {
+        output = "";
+        output2 = "";
     }
 
     /**
@@ -55,30 +62,25 @@ public class Player {
      */
     public void BuySeeds() {
         int choice, type, prev, quantity = 1;
-   
+        String output;
+
         seedData.Generate(store.getCurrent());
         type = seedData.getType();
         if (Ocoins >= seedData.getCost() * quantity && quantity != 0) {
             prev = seedInv.get(type - 1);
             seedInv.set(type - 1, prev + quantity);
-            //try to notify player how many seeds have been bought. TODO DEBUG
+            // try to notify player how many seeds have been bought. TODO DEBUG
             Ocoins -= (seedData.getCost() * quantity);
-            //update player info
+            // update player info
+            output = "Successfully bought 1 piece of " + seedData.getName() + ". \n" + Ocoins
+                    + " Objectcoins remaining.";
         } else {
-            //System.out.println("Sorry. You do not have enough Object Coins to purchase that many.");
-            //update user that they do not have enough coins using a window TODO DEBUG
-            Ocoins += Ocoins;
+            // System.out.println("Sorry. You do not have enough Object Coins to purchase
+            // that many.");
+            // update user that they do not have enough coins using a window TODO DEBUG
+            output = "Sorry. You do not have enough Objectcoins to purchase that many.";
         }
-    }
-
-    /**
-     * Method for checking if the seeds of the player has run out
-     * 
-
-     */
-    public boolean runOutOfSeeds (){
-        return seedInv.isEmpty() || seedInv.stream()
-        .allMatch(seedInv.get(0)::equals);
+        WindowResultGui result = new WindowResultGui(output);
     }
 
     public ArrayList<Integer> getSeedInv() {
@@ -120,7 +122,5 @@ public class Player {
     public String getOutput2() {
         return output2;
     }
-
-    
 
 }

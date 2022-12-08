@@ -1,29 +1,28 @@
 import java.util.ArrayList;
 
-public class ControllerFarm{
+public class ControllerFarm {
     private Farm farm;
     private WindowErrorGui errorGui;
     private ArrayList<Tile> Land;
     private PlowTool plowTool;
 
-    //contstructor
-    public ControllerFarm(Farm farm, ArrayList<Tile> Land, PlowTool plowTool){
+    // contstructor
+    public ControllerFarm(Farm farm, ArrayList<Tile> Land, PlowTool plowTool) {
         this.farm = farm;
         this.Land = Land;
         this.plowTool = plowTool;
     }
 
-    public void Plow(int tileNum){
-        if (Land.get(tileNum).getPlowState() == 0 || Land.get(tileNum).getPlowState() == 1
-                || Land.get(tileNum).getPlowState() == 2) {
+    public void Plow(int tileNum) {
+        if (Land.get(tileNum).getPlowState() == 0 || Land.get(tileNum).getPlowState() == 1) {
             plowTool.Plow(Land, tileNum);
         }
 
     }
-    
-    //error
-    public void error(){
+
+    // error
+    public void error() {
         errorGui = new WindowErrorGui(Land, plowTool, farm);
     }
-    
+
 }

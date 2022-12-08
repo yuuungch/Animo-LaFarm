@@ -14,11 +14,11 @@ public class WateringCan {
             output = "Please plow this tile first before watering!";
         } else if (array.get(x).getSeedState() == 0) { // NO SEED PRESENT
             output = "Please plant a seed onto this tile first before watering!";
-        } else if (array.get(x).getWaterCount() <= array.get(x).getSeedInfo().getWater()
+        } else if ((array.get(x).getWaterCount() <= array.get(x).getSeedInfo().getWater()
                 || array.get(x).getWaterCount() < array.get(x).getSeedInfo().getBonusWater()
-                        + array.get(x).getPlayerExp().getWaterBonus()
-                        && array.get(x).getWateredToday() == 0) { // TLDR: if water count does not yet exceed the
-                                                                  // maximum
+                        + array.get(x).getPlayerExp().getWaterBonus())
+                && array.get(x).getWateredToday() == 0) { // TLDR: if water count does not yet exceed the
+                                                          // maximum
             // number of
             // watering and has not yet been watered today
             array.get(x).setWaterCount(array.get(x).getWaterCount() + 1);
@@ -26,9 +26,9 @@ public class WateringCan {
             output = "Tile watered successfully.";
             array.get(x).getPlayerExp().GainExp(0.5, array.get(x).getPlayerExp());
             ;
-        } else if (array.get(x).getWaterCount() <= array.get(x).getSeedInfo().getWater()
-                || array.get(x).getWaterCount() <= array.get(x).getSeedInfo().getBonusWater()
-                        && array.get(x).getWateredToday() == 1) { // ALREADY WATERED
+        } else if ((array.get(x).getWaterCount() <= array.get(x).getSeedInfo().getWater()
+                || array.get(x).getWaterCount() < array.get(x).getSeedInfo().getBonusWater())
+                && array.get(x).getWateredToday() == 1) { // ALREADY WATERED
             output = "Tile has already been watered today. Please come again tomorrow to continute watering.";
         } else if (array.get(x).getWaterCount() > array.get(x).getSeedInfo().getWater()
                 && array.get(x).getWaterCount() >= array.get(x).getSeedInfo().getBonusWater()) { // MAX AMOUNT REACHED

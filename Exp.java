@@ -15,7 +15,7 @@ public class Exp {
     private String infoQ;
 
     public Exp() {
-        exp = 0;
+        exp = 100;
         farmerType = "Farmer";
         level = 0;
         earningBonus = 0;
@@ -30,12 +30,12 @@ public class Exp {
      * 
      * @param gain    is the gained experience points
      * @param current the Exp class of the player
-     * DEBUG use this to update player info
+     *                DEBUG use this to update player info
      */
     public void GainExp(double gain, Exp current) {
         current.setExp(current.getExp() + gain);
         output = "You have gained " + gain + " experience points! (" + current.getExp() + " / "
-                        + (current.getLevel() + 1) * 100 + ")";
+                + (current.getLevel() + 1) * 100 + ")";
         WindowOutputGui outputGui = new WindowOutputGui(output);
         LevelUp();
     }
@@ -56,12 +56,12 @@ public class Exp {
      * Void Method to check player's experience stats and bonuses
      */
     public String CheckStatus() {
-        status = "\nEXP: " + exp + "\nEXP to next level: " + (level + 1) * 100 + 
-        "\nCurrent Level: " + level + "\nFarmer Type:" + farmerType + 
-        "\nBonus Earnings per Produce: " + earningBonus +
-        "\nSeed Cost Reduction: " + costReduction +
-        "\nWater Bonus Limit Increase: " + waterBonus +
-        "\nFertilizer Bonus Limit Increase: " + fertiBonus;
+        status = "\nEXP: " + exp + "\nEXP to next level: " + (level + 1) * 100 +
+                "\nCurrent Level: " + level + "\nFarmer Type:" + farmerType +
+                "\nBonus Earnings per Produce: " + earningBonus +
+                "\nSeed Cost Reduction: " + costReduction +
+                "\nWater Bonus Limit Increase: " + waterBonus +
+                "\nFertilizer Bonus Limit Increase: " + fertiBonus;
         return status;
     }
 
@@ -78,8 +78,8 @@ public class Exp {
         int choice;
         do {
             infoQ = "Your current status is " + farmerType + "." +
-                   "Next status is " + nextType + ". Registration fee is " + regcap + ".\n"
-                   +"[1] Yes\n" +"[2] No\n" + "\nWould you like to register as a " + nextType + "? ";
+                    "Next status is " + nextType + ". Registration fee is " + regcap + ".\n"
+                    + "[1] Yes\n" + "[2] No\n" + "\nWould you like to register as a " + nextType + "? ";
             WindowAskExpGui askExpGui = new WindowAskExpGui(infoQ);
             choice = askExpGui.getChoice();
 
@@ -87,7 +87,7 @@ public class Exp {
                 farmerType = nextType;
                 p.setOcoins(p.getOcoins() - regcap);
                 output = "Congratulations! You have successfully registered as a " + farmerType + "."
-                +"\nDeducted " + regcap + " Objectcoins for registration. " + p.getOcoins()
+                        + "\nDeducted " + regcap + " Objectcoins for registration. " + p.getOcoins()
                         + " Objectcoins remaining.";
             } else if (choice == 1 && p.getOcoins() < regcap) { // NOT ENOUGH OBJECTCOINS
                 output = "Sorry. You do not have enough Objectcoins to register as a " + nextType + ".";
@@ -120,10 +120,10 @@ public class Exp {
             fertiBonus = 1;
         }
         output = "Respective Bonuses Increased:\n" + "Earning Bonus: " + earningBonus +
-                 "\nCost Reduction: " + costReduction + "\nWater Bonus: " + waterBonus +
-                 "\nFertilizing Bonus: " + fertiBonus;
+                "\nCost Reduction: " + costReduction + "\nWater Bonus: " + waterBonus +
+                "\nFertilizing Bonus: " + fertiBonus;
 
-        WindowResultGui resultGui = new WindowResultGui(output);
+        WindowOutputGui resultGui = new WindowOutputGui(output);
     }
 
     /**
@@ -152,7 +152,7 @@ public class Exp {
             RegMenu("Legendary Farmer", p, regcap);
             Stats();
         }
-        if (output != null){
+        if (output != null) {
             WindowOutputGui outputGui = new WindowOutputGui(output);
         }
     }

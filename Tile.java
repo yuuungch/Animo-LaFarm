@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Tile {
-    private int rockState; // 0 with rock, 1 no rock
+    private int rockState; // 0 no rock, 1 with rock
     private int plowState; // 0 for unplowed, 1 for plowed
     private int seedState; // 0 unplanted, 1 to 8 for types of seed, 9 if withered
     private boolean witherState; // false unwithered, true withered
@@ -19,8 +19,8 @@ public class Tile {
     private String outString;
     private String finalOutput;
 
-    public Tile(Seeds seedInfo, Exp playerExp) {
-        rockState = 1;
+    public Tile(Exp playerExp) {
+        rockState = 0;
         plowState = 0;
         seedState = 0;
         witherState = false;
@@ -28,7 +28,7 @@ public class Tile {
         wateredToday = 0;
         fertiCount = 0;
         fertilizedToday = 0;
-        this.seedInfo = seedInfo;
+        seedInfo = new Seeds(0);
         this.playerExp = playerExp;
     }
 
@@ -37,16 +37,14 @@ public class Tile {
      * 
      * @param array ArrayList of Tiles
      */
-    public void SetRocks(ArrayList<Tile> array) {
+    public void SetRocks(ArrayList<Tile> array, int x) {
         File filename = new File("Rocks.txt");
         try (Scanner file = new Scanner(filename)) {
-            int index = file.nextInt();
-            array.get(index).setRockState(1);
-            System.out.println(index);
+            int index;
             while (file.hasNextInt()) {
                 index = file.nextInt();
-                array.get(index).setRockState(1);
-                System.out.println(index);
+                if (x == index)
+                    array.get(index).setRockState(1);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error. Filename " + filename + " not found!");
@@ -66,23 +64,23 @@ public class Tile {
 
         boolean treePos = true;
 
-        if (x == 7 || x == 8) {
+        if (y == 7 || y == 8) {
             treePos = false;
             treePos = TreeCheck(array, x);
         }
-
-        if (array.get(x).plowState == 0) { // UNPLOWED
+        if (array.get(x).getRockState() == 1) {
+            output = "Cannot plant seed on chosen tile. Please remove rocks first.";
+        } else if (array.get(x).getPlowState() == 0) { // UNPLOWED
             output = "Cannot plant seed on chosen tile. Please plow the tile first.";
         } else if (!treePos) {
             output = "Cannot plant tree seed on chosen tile.";
-        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1 && treePos) { // SUCCESS
+        } else if (array.get(x).getSeedState() == 0 && array.get(x).getPlowState() == 1 && treePos) { // SUCCESS
             array.get(x).setSeedState(y);
-            output = array.get(x).seedInfo.getName() + " seed planted Successfully! ";
-        } else if (array.get(x).seedState != 0 && array.get(x).plowState == 1) { // ALREADY HAS A SEED
+            output = array.get(x).getSeedInfo().getName() + " seed planted Successfully! ";
+        } else if (array.get(x).getSeedState() != 0 && array.get(x).getPlowState() == 1) { // ALREADY HAS A SEED
             output = "Sorry. This tile already has a seed planted. ";
-        } else if (array.get(x).seedState == 9) { // WITHERED PLANT PRESENT
-            output =
-                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.";
+        } else if (array.get(x).getSeedState() == 9) { // WITHERED PLANT PRESENT
+            output = "Sorry. There is still a withered plant present here in this tile. Please remove it first.";
         }
         WindowOutputGui outputGui = new WindowOutputGui(output);
     }
@@ -122,15 +120,17 @@ public class Tile {
      * @param x     Tile Number
      */
     public void WitherCheck(ArrayList<Tile> array, int x) {
-        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0
-                && array.get(x).getSeedState() != 0) &&
-                (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
-            System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
+        String output;
+        if ((array.get(x).seedInfo.getDaysLeft() < 0 || array.get(x).getWateredToday() == 0
+                && array.get(x).getSeedState() != 0)) {
+            output = "Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!";
             array.get(x).setWitherState(true);
             array.get(x).setSeedState(9);
             array.get(x).setWaterCount(0);
             array.get(x).setFertiCount(0);
             array.get(x).seedInfo.Generate(0);
+
+            WindowOutputGui withered = new WindowOutputGui(output);
         }
     }
 
@@ -160,7 +160,13 @@ public class Tile {
 
             WaterBonusValue = HarvestTotal * 0.2 * (array.get(x).getWaterCount() - 1);
 
+            if (WaterBonusValue < 0)
+                WaterBonusValue = 0;
+
             FertilizerBonusValue = HarvestTotal * 0.5 * (array.get(x).getFertiCount());
+
+            if (FertilizerBonusValue < 0)
+                FertilizerBonusValue = 0;
 
             FinalHarvestPrice = HarvestTotal + WaterBonusValue + FertilizerBonusValue;
 
@@ -171,29 +177,29 @@ public class Tile {
 
             // FLOWER MULTIPLIER BONUS
             if (array.get(x).seedInfo.getType() >= 4 && array.get(x).seedInfo.getType() <= 6) {
-                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
-                            "Total Number of Harvest: " + produceNum + 
-                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
-                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
-                            "\nWater Bonus: " + WaterBonusValue +
-                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
-                            "\nFertilizer Bonus: " + FertilizerBonusValue +
-                            "Flower Multiplier Bonus: 1.1";
-                            FinalHarvestPrice *= 1.1;
+                outString = "Profit Breakdown:\n" + "-----------------------\n" +
+                        "Total Number of Harvest: " + produceNum +
+                        "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                        "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                        "\nWater Bonus: " + WaterBonusValue +
+                        "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                        "\nFertilizer Bonus: " + FertilizerBonusValue +
+                        "Flower Multiplier Bonus: 1.1";
+                FinalHarvestPrice *= 1.1;
             } else {
-                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
-                            "Total Number of Harvest: " + produceNum + 
-                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
-                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
-                            "\nWater Bonus: " + WaterBonusValue +
-                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
-                            "\nFertilizer Bonus: " + FertilizerBonusValue;                                  
+                outString = "Profit Breakdown:\n" + "-----------------------\n" +
+                        "Total Number of Harvest: " + produceNum +
+                        "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                        "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                        "\nWater Bonus: " + WaterBonusValue +
+                        "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                        "\nFertilizer Bonus: " + FertilizerBonusValue;
             }
             p.setOcoins(p.getOcoins() + FinalHarvestPrice);
-            finalOutput = outString + "\nTotal Profit: " + FinalHarvestPrice + // FINAL PROFIT 
-                                      "\n-------------------------" +
-                                      "\nAdded " + FinalHarvestPrice + " to your inventory. Total of " + 
-                                      p.getOcoins() + " Objectcoins in inventory.";
+            finalOutput = outString + "\nTotal Profit: " + FinalHarvestPrice + // FINAL PROFIT
+                    "\n-------------------------" +
+                    "\nAdded " + FinalHarvestPrice + " to your inventory. Total of " +
+                    p.getOcoins() + " Objectcoins in inventory.";
             WindowResultGui resultGui = new WindowResultGui(finalOutput);
             playerExp.GainExp(array.get(x).seedInfo.getExpYield() * produceNum, array.get(x).playerExp);
 
