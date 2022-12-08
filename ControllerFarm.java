@@ -18,6 +18,7 @@ public class ControllerFarm{
                 || Land.get(tileNum).getPlowState() == 2) {
             plowTool.Plow(Land, tileNum);
         }
+
     }
     
     //error

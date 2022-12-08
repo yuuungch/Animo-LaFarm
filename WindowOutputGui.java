@@ -14,7 +14,7 @@ public class WindowOutputGui extends JFrame {
     private String output;  
 
     public WindowOutputGui(String output){
-        super("Result");
+        super();
 
         // this
         this.output = output;

@@ -15,7 +15,7 @@ public class WindowResultGui extends JFrame {
     private String output;  
 
     public WindowResultGui(String output){
-        super("Result");
+        super();
 
         // this
         this.output = output;
@@ -24,7 +24,7 @@ public class WindowResultGui extends JFrame {
         setLayout( new BorderLayout());
 
         //Set size of our window
-        setSize(350, 200);
+        setSize(800, 300);
 
         //add elements before visible
         init();

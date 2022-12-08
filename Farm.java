@@ -130,6 +130,23 @@ public class Farm {
         }                                                                                                               
     }
 
+    public void checkTile(int tileNum){
+        if (tileNum >= 0 && tileNum <= 49) {
+            output = "Incubation Period: " + Land.get(tileNum).getSeedInfo().getHarvestTime() +
+                     "\nDays left before Harvestable: " + Land.get(tileNum).getSeedInfo().getDaysLeft() +
+                     "\nMax Water Count: " + Land.get(tileNum).getSeedInfo().getWater() + " ("
+                     + Land.get(tileNum).getSeedInfo().getBonusWater() + ")" +
+                     "\nCurrent Water Count: " + Land.get(tileNum).getWaterCount() +
+                     "\nMax Fertilize Count: " + Land.get(tileNum).getSeedInfo().getFertilizer() + " ("
+                     + Land.get(tileNum).getSeedInfo().getBonusFertilizer() + ")" +
+                     "\nCurrent Fertilize Count: " + Land.get(tileNum).getFertiCount();
+            WindowTileGui tileGui = new WindowTileGui(output);
+        } else {
+            output = "Invalid input. Please try again.";
+            WindowOutputGui outputGui = new WindowOutputGui(output);
+        }
+    }
+
     public String getCurrentPlayerInfo(){
         //generate info
         playerInfo = "---------------------------------"+ "\nObjectcoins Available: "

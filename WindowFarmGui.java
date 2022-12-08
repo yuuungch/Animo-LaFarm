@@ -21,6 +21,7 @@ public class WindowFarmGui extends JFrame{
     private JButton btnHarvest;
     private JButton btnRankUp;
     private JButton btnNextDay;
+    private JButton btnPlayerInfo;
     private JTextArea text;
     private WindowAskPlowGui askGui;
     private WindowAskSeedGui askSeedGui;
@@ -31,6 +32,7 @@ public class WindowFarmGui extends JFrame{
     private WindowAskPickaxeGui pickaxeGui;
     private WindowHelpGui helpGui;
     private WindowStoreGui storeGui;
+    //private WindowTileGui tileGui;
     private String chosenTile; 
     private int chosenTileNum;
     private Farm farm;
@@ -134,7 +136,7 @@ public class WindowFarmGui extends JFrame{
         panelSouth.add(btnStore);
         //add button Help to panel
         btnHelp = new JButton("Help");
-        btnStore.addMouseListener(new MouseListener(){
+        btnHelp.addMouseListener(new MouseListener(){
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -181,18 +183,15 @@ public class WindowFarmGui extends JFrame{
         panelNorth.setBackground(Color.decode("#006400"));
 
         //add text 
-        // JTextArea text = new JTextArea("---------------------------------"+ "\nObjectcoins Available: "
-        // + player.getOcoins() + player.getExpData().CheckStatus()
-        // + "\n" + "---------------------------------"+ "\n" );
-        player.CheckSeedInventory();
-        text = new JTextArea(player.getOutput() +  "\n" + player.getOutput2()+ "\n" + farm.getCurrentPlayerInfo());
-        text.setLineWrap(true);
-        text.setBackground(Color.decode("#006400"));
-        text.setForeground(Color.WHITE);
-        text.setSize(1400, 50);
+        //player.CheckSeedInventory();
+        // text = new JTextArea(/* player.getOutput() +  "\n" + player.getOutput2()+ "\n" + farm.getCurrentPlayerInfo() */);
+        // text.setLineWrap(true);
+        // text.setBackground(Color.decode("#006400"));
+        // text.setForeground(Color.WHITE);
+        // text.setSize(1400, 50);
 
         //add label to panel
-        panelNorth.add(text);
+        //panelNorth.add(text);
 
         //add panel to frame
         this.add(panelNorth, BorderLayout.NORTH);
@@ -221,6 +220,7 @@ public class WindowFarmGui extends JFrame{
         btnHarvest = new JButton("Harvest");
         btnRankUp = new JButton("Rank Up");
         btnNextDay = new JButton("Next Day");
+        btnPlayerInfo = new JButton("Player Information");
 
 
         //mouselistener for JButtons
@@ -230,6 +230,7 @@ public class WindowFarmGui extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 // TODO Auto-generated method stub
                 askGui = new WindowAskPlowGui(Land, plowTool, farm);
+                updatePlayer();
             }
 
             @Override
@@ -263,6 +264,7 @@ public class WindowFarmGui extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 // TODO Auto-generated method stub
                 askSeedGui = new WindowAskSeedGui(Land, plowTool, farm);
+                updatePlayer();
             }
 
             @Override
@@ -456,7 +458,7 @@ public class WindowFarmGui extends JFrame{
             }
         });
 
-        btnHarvest.addMouseListener(new MouseListener(){
+        btnRankUp.addMouseListener(new MouseListener(){
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -521,6 +523,39 @@ public class WindowFarmGui extends JFrame{
                 
             }});
 
+
+        btnPlayerInfo.addMouseListener(new MouseListener(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+               WindowResultGui resultGui = new WindowResultGui(updatePlayer());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // TODO Auto-generated method stub
+                
+            }});
+
         //add button to panel
         panelEast.add(btnPlow);
         panelEast.add(btnPlant);
@@ -529,6 +564,9 @@ public class WindowFarmGui extends JFrame{
         panelEast.add(btnPickaxe);
         panelEast.add(btnShovel);
         panelEast.add(btnHarvest);
+        panelEast.add(btnRankUp);
+        panelEast.add(btnNextDay);
+        panelEast.add(btnPlayerInfo);
 
         //add panel to frame
         this.add(panelEast, BorderLayout.EAST);
@@ -550,6 +588,7 @@ public class WindowFarmGui extends JFrame{
                 public void mouseClicked(MouseEvent e) {
                     // TODO Auto-generated method stub
                         lblTiles[1].setText("working");
+                        farm.checkTile(1);
                 }
 
                 @Override
@@ -2205,12 +2244,16 @@ public class WindowFarmGui extends JFrame{
         this.add(panelCenter, BorderLayout.CENTER);
     }
     //update the player info DEBUG DOES IT UPDATE?
-    public void updatePlayer(){
-        setPlayerInfo(farm.getCurrentPlayerInfo());
+    public String updatePlayer(){
+        return setPlayerInfo(farm.getCurrentPlayerInfo());
     }
-    //set player info
-    public void setPlayerInfo(String playerInfo){
-       text.setText(playerInfo);
+
+    //set seed inventory and player info
+    public String setPlayerInfo(String playerInfo){
+        String playerINFO;
+        player.CheckSeedInventory();
+        playerINFO = player.getOutput() +  "\n" + player.getOutput2()+ "\n" + playerInfo;
+        return playerINFO;
     }
 
     //add listeners to the buttons to know what the buttons are doing

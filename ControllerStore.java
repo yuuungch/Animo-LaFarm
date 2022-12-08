@@ -9,17 +9,20 @@ public class ControllerStore implements ActionListener, DocumentListener{
     private WindowStoreGui storeGui;
     private Store store;
     private Player player;
+   // private WindowFarmGui farmGui;
 
     //contstructor
     public ControllerStore(WindowStoreGui storeGui, Store store, Player player){
         this.storeGui = storeGui;
         this.store = store;
         this.player = player;
+       // this.farmGui = farmGui;
         updateView();
 
         storeGui.setActionListener(this);
         storeGui.setDocumentsListener(this);
     }
+
 
     //update num of seeds to total num of seeds
     public void updateView(){
