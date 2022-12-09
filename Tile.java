@@ -60,7 +60,7 @@ public class Tile {
      * @param x     Tile Number
      * @param y     Seed Type
      */
-    public void Plant(ArrayList<Tile> array, int x, int y) {
+    public void Plant(ArrayList<Tile> array, int x, int y, Player p) {
 
         boolean treePos = true;
 
@@ -76,6 +76,8 @@ public class Tile {
             output = "Cannot plant tree seed on chosen tile.";
         } else if (array.get(x).getSeedState() == 0 && array.get(x).getPlowState() == 1 && treePos) { // SUCCESS
             array.get(x).setSeedState(y);
+            array.get(x).getSeedInfo().Generate(y);
+            p.getSeedInv().set(y - 1, p.getSeedInv().get(y - 1) - 1);
             output = array.get(x).getSeedInfo().getName() + " seed planted Successfully! ";
         } else if (array.get(x).getSeedState() != 0 && array.get(x).getPlowState() == 1) { // ALREADY HAS A SEED
             output = "Sorry. This tile already has a seed planted. ";

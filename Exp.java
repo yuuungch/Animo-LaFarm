@@ -15,7 +15,7 @@ public class Exp {
     private String infoQ;
 
     public Exp() {
-        exp = 100;
+        exp = 0;
         farmerType = "Farmer";
         level = 0;
         earningBonus = 0;

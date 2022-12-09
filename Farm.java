@@ -41,16 +41,21 @@ public class Farm {
                     + seed.getName() + ")";
             WindowOutputGui outputGui = new WindowOutputGui(output);
         } else {
-            Land.get(tileNum).getSeedInfo().Generate(seedNum);
-            player.getSeedInv().set(seedNum - 1,
-                    player.getSeedInv().get(seedNum - 1) - 1);
-            Land.get(tileNum).Plant(Land, tileNum, seedNum);
-
+            Land.get(tileNum).Plant(Land, tileNum, seedNum, player);
         }
     }
 
     public void harvest(ArrayList<Tile> Land, int tileNum, Player player) {
-        Land.get(tileNum).Harvest(Land, tileNum, player);
+        String output = "";
+        if (Land.get(tileNum).getSeedState() != 0 && Land.get(tileNum).getSeedInfo().getDaysLeft() == 0) {
+            Land.get(tileNum).Harvest(Land, tileNum, player);
+        } else if (Land.get(tileNum).getSeedState() != 0 && Land.get(tileNum).getSeedInfo().getDaysLeft() > 0) {
+            output = "Cannot harvest " + Land.get(tileNum).getSeedInfo().getName()
+                    + " since it is not yet harvestable.";
+        } else if (Land.get(tileNum).getSeedState() == 0) {
+            output = "Cannot harvest since tile does not contain any seed.";
+        }
+        WindowResultGui harvestWindow = new WindowResultGui(output);
     }
 
     public void rankUp() {
