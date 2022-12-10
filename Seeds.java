@@ -1,33 +1,41 @@
-import java.util.Random;
-
 public class Seeds {
     private int type;
     private String name;
     private int harvestTime;
+    private int daysLeft;
     private int water;
     private int bonusWater;
     private int fertilizer;
     private int bonusFertilizer;
-    private int produce;
+    private int produceMin;
+    private int produceMax;
     private int cost;
     private int baseSell;
     private double expYield;
+    private String desc;
+    private int num;
 
-    public Seeds() {
+    public Seeds(int num) {
         type = 0;
         name = "";
         harvestTime = 0;
+        daysLeft = 0;
         water = 0;
         bonusWater = 0;
         fertilizer = 0;
         bonusFertilizer = 0;
-        produce = 0;
+        produceMin = 0;
+        produceMax = 0;
         cost = 0;
         baseSell = 0;
         expYield = 0;
+        desc = "";
+        this.num = num;
     }
 
-    /*
+    /**
+     * * Method to generate the respective stats and values for each type of plant.
+     * List of plant provided below:
      * 1. Turnip (root Crop)
      * 2. Carrot
      * 3. Potato
@@ -36,194 +44,359 @@ public class Seeds {
      * 6. Sunflower
      * 7. Mango
      * 8. Apple
+     * 
+     * @param x integer variable to determine which number is which plant
      */
     public void Generate(int x) {
-        if (x == 1) {
+        if (x == 0) { // BASE DEFAULT
+            type = 0;
+            name = "";
+            harvestTime = 0;
+            daysLeft = 0;
+            water = 0;
+            bonusWater = 0;
+            fertilizer = 0;
+            bonusFertilizer = 0;
+            produceMin = 0;
+            produceMax = 0;
+            cost = 0;
+            baseSell = 0;
+            expYield = 0;
+            desc = "";
+        } else if (x == 1) { // TURNIP ROOT CROP
             type = 1;
-            name = "Turnip (root crop)";
+            name = "Turnip (Root Crop)";
             harvestTime = 2;
+            daysLeft = 2;
             water = 1;
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            //produce = 1-2;
+            produceMin = 1;
+            produceMax = 2;
             cost = 5;
             baseSell = 6;
             expYield = 5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-2\nSeed Cost:\t\t5\nBase Selling Price per Piece:\t6\nExp Yield:\t\t5";
         } else if (x == 2) {
             type = 2;
             name = "Carrot";
             harvestTime = 3;
+            daysLeft = 3;
             water = 1;
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            //produce = 1-2;
+            produceMin = 1;
+            produceMax = 2;
             cost = 10;
             baseSell = 9;
             expYield = 7.5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-2\nSeed Cost:\t\t10\nBase Selling Price per Piece:\t9\nExp Yield:\t\t7.5";
         } else if (x == 3) {
             type = 3;
             name = "Potato";
             harvestTime = 5;
+            daysLeft = 5;
             water = 3;
             bonusWater = 4;
             fertilizer = 1;
             bonusFertilizer = 2;
-            //produce = 1-10;
+            produceMin = 1;
+            produceMax = 10;
             cost = 20;
             baseSell = 3;
             expYield = 12.5;
+            desc = "Crop Type:\t\tRoot Crop\nProducts Produced:\t1-10\nSeed Cost:\t\t20\nBase Selling Price per Piece:\t3\nExp Yield:\t\t12.5";
         } else if (x == 4) {
             type = 4;
             name = "Rose";
             harvestTime = 1;
+            daysLeft = 1;
             water = 1;
             bonusWater = 2;
             fertilizer = 0;
             bonusFertilizer = 1;
-            //produce = 1;
+            produceMin = 1;
+            produceMax = 1;
             cost = 10;
             baseSell = 5;
             expYield = 2.5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t5\nBase Selling Price per Piece:\t5\nExp Yield:\t\t2.5";
         } else if (x == 5) {
             type = 5;
             name = "Turnip (Flower)";
             harvestTime = 2;
+            daysLeft = 2;
             water = 2;
             bonusWater = 3;
             fertilizer = 0;
             bonusFertilizer = 1;
-            //produce = 1;
+            produceMin = 1;
+            produceMax = 1;
             cost = 10;
             baseSell = 19;
             expYield = 5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t10\nBase Selling Price per Piece:\t9\nExp Yield:\t\t5";
         } else if (x == 6) {
             type = 6;
             name = "Sunflower";
             harvestTime = 3;
+            daysLeft = 3;
             water = 2;
             bonusWater = 3;
             fertilizer = 1;
             bonusFertilizer = 2;
-            // produce = 1;
+            produceMin = 1;
+            produceMax = 1;
             cost = 20;
             baseSell = 19;
             expYield = 7.5;
+            desc = "Crop Type:\t\tFlower\nProducts Produced:\t1\nSeed Cost:\t\t20\nBase Selling Price per Piece:\t19\nExp Yield:\t\t7.5";
         } else if (x == 7) {
             type = 7;
             name = "Mango";
             harvestTime = 10;
+            daysLeft = 10;
             water = 7;
             bonusWater = 7;
             fertilizer = 4;
             bonusFertilizer = 4;
-            //produce = 5-15;
+            produceMin = 5;
+            produceMax = 15;
             cost = 100;
             baseSell = 8;
             expYield = 25;
+            desc = "Crop Type:\t\tFruit Tree\nProducts Produced:\t5-15\nSeed Cost:\t\t100\nBase Selling Price per Piece:\t8\nExp Yield:\t\t25";
         } else if (x == 8) {
             type = 8;
             name = "Apple";
             harvestTime = 10;
+            daysLeft = 10;
             water = 7;
             bonusWater = 7;
             fertilizer = 5;
             bonusFertilizer = 5;
-            //produce = 10-15;
+            produceMin = 10;
+            produceMax = 15;
             cost = 200;
             baseSell = 5;
             expYield = 25;
+            desc = "Crop Type:\t\tFruit Tree\nProducts Produced:\t10-15\nSeed Cost:\t\t200\nBase Selling Price per Piece:\t5\nExp Yield:\t\t25";
         }
     }
+
+    /**
+     * Method to immediately add the bonuses to the respective base stats
+     * 
+     * @param earningBonus  bonus amount added to base Sell price
+     * @param costReduction bonus amount deducted from base Cost price
+     * @param waterBonus    bonus amount added to base Water limit
+     * @param fertiBonus    bonus amount added to base Fertilize limit
+     */
+    public void ExpChange(int earningBonus, int costReduction, int waterBonus, int fertiBonus) {
+        baseSell += earningBonus;
+        cost -= costReduction;
+        bonusWater += waterBonus;
+        bonusFertilizer += fertiBonus;
+    }
+
+    /**
+     * @return int
+     */
+    // GETTERS AND SETTERS
 
     public int getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(int type) {
         this.type = type;
     }
 
+    /**
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return int
+     */
     public int getHarvestTime() {
         return harvestTime;
     }
 
+    /**
+     * @param harvestTime
+     */
     public void setHarvestTime(int harvestTime) {
         this.harvestTime = harvestTime;
     }
 
+    /**
+     * @return int
+     */
+    public int getDaysLeft() {
+        return daysLeft;
+    }
+
+    /**
+     * @param daysLeft
+     */
+    public void setDaysLeft(int daysLeft) {
+        this.daysLeft = daysLeft;
+    }
+
+    /**
+     * @return int
+     */
     public int getWater() {
         return water;
     }
 
+    /**
+     * @param water
+     */
     public void setWater(int water) {
         this.water = water;
     }
 
+    /**
+     * @return int
+     */
     public int getBonusWater() {
         return bonusWater;
     }
 
+    /**
+     * @param bonusWater
+     */
     public void setBonusWater(int bonusWater) {
         this.bonusWater = bonusWater;
     }
 
+    /**
+     * @return int
+     */
     public int getFertilizer() {
         return fertilizer;
     }
 
+    /**
+     * @param fertilizer
+     */
     public void setFertilizer(int fertilizer) {
         this.fertilizer = fertilizer;
     }
 
+    /**
+     * @return int
+     */
     public int getBonusFertilizer() {
         return bonusFertilizer;
     }
 
+    /**
+     * @param bonusFertilizer
+     */
     public void setBonusFertilizer(int bonusFertilizer) {
         this.bonusFertilizer = bonusFertilizer;
     }
 
-    public int getProduce() {
-        return produce;
+    /**
+     * @return int
+     */
+    public int getProduceMin() {
+        return produceMin;
     }
 
-    public void setProduce(int produce) {
-        this.produce = produce;
+    /**
+     * @param produceMin
+     */
+    public void setProduceMin(int produceMin) {
+        this.produceMin = produceMin;
     }
 
+    /**
+     * @return int
+     */
+    public int getProduceMax() {
+        return produceMax;
+    }
+
+    /**
+     * @param produceMax
+     */
+    public void setProduceMax(int produceMax) {
+        this.produceMax = produceMax;
+    }
+
+    /**
+     * @return int
+     */
     public int getCost() {
         return cost;
     }
 
+    /**
+     * @param cost
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }
 
+    /**
+     * @return int
+     */
     public int getBaseSell() {
         return baseSell;
     }
 
+    /**
+     * @param baseSell
+     */
     public void setBaseSell(int baseSell) {
         this.baseSell = baseSell;
     }
 
+    /**
+     * @return double
+     */
     public double getExpYield() {
         return expYield;
     }
 
-    public void setExpYield(double expYield) {
+    /**
+     * @param expYield
+     */
+    public void setExpYield(int expYield) {
         this.expYield = expYield;
     }
 
+    /**
+     * @return String
+     */
+    public String getDesc() {
+        return desc;
+    }
+
+    /**
+     * @param desc
+     */
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
 }
