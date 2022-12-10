@@ -23,7 +23,7 @@ public class WindowOutputGui extends JFrame {
         setLayout(new BorderLayout());
 
         // Set size of our window
-        setSize(350, 200);
+        setSize(800, 200);
 
         // add elements before visible
         init();

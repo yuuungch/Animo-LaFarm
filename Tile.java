@@ -115,8 +115,7 @@ public class Tile {
     }
 
     /**
-     * Method that regularly checks for a withered plant (This method stays here in
-     * Tile, DO NOT MOVE TO SHOVEL)
+     * Method that regularly checks for a withered plant
      * 
      * @param array ArrayList of Tiles
      * @param x     Tile Number
