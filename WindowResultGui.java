@@ -58,6 +58,9 @@ public class WindowResultGui extends JFrame {
         this.add(panelCenter, BorderLayout.CENTER);
     }
 
+    /**
+     * @param listener
+     */
     // add listeners to the buttons to know what the buttons are doing
     public void setActionListener(ActionListener listener) {
         btnTryAgain.addActionListener(listener);

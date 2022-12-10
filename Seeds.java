@@ -201,118 +201,202 @@ public class Seeds {
         bonusFertilizer += fertiBonus;
     }
 
+    /**
+     * @return int
+     */
     // GETTERS AND SETTERS
 
     public int getType() {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(int type) {
         this.type = type;
     }
 
+    /**
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return int
+     */
     public int getHarvestTime() {
         return harvestTime;
     }
 
+    /**
+     * @param harvestTime
+     */
     public void setHarvestTime(int harvestTime) {
         this.harvestTime = harvestTime;
     }
 
+    /**
+     * @return int
+     */
     public int getDaysLeft() {
         return daysLeft;
     }
 
+    /**
+     * @param daysLeft
+     */
     public void setDaysLeft(int daysLeft) {
         this.daysLeft = daysLeft;
     }
 
+    /**
+     * @return int
+     */
     public int getWater() {
         return water;
     }
 
+    /**
+     * @param water
+     */
     public void setWater(int water) {
         this.water = water;
     }
 
+    /**
+     * @return int
+     */
     public int getBonusWater() {
         return bonusWater;
     }
 
+    /**
+     * @param bonusWater
+     */
     public void setBonusWater(int bonusWater) {
         this.bonusWater = bonusWater;
     }
 
+    /**
+     * @return int
+     */
     public int getFertilizer() {
         return fertilizer;
     }
 
+    /**
+     * @param fertilizer
+     */
     public void setFertilizer(int fertilizer) {
         this.fertilizer = fertilizer;
     }
 
+    /**
+     * @return int
+     */
     public int getBonusFertilizer() {
         return bonusFertilizer;
     }
 
+    /**
+     * @param bonusFertilizer
+     */
     public void setBonusFertilizer(int bonusFertilizer) {
         this.bonusFertilizer = bonusFertilizer;
     }
 
+    /**
+     * @return int
+     */
     public int getProduceMin() {
         return produceMin;
     }
 
+    /**
+     * @param produceMin
+     */
     public void setProduceMin(int produceMin) {
         this.produceMin = produceMin;
     }
 
+    /**
+     * @return int
+     */
     public int getProduceMax() {
         return produceMax;
     }
 
+    /**
+     * @param produceMax
+     */
     public void setProduceMax(int produceMax) {
         this.produceMax = produceMax;
     }
 
+    /**
+     * @return int
+     */
     public int getCost() {
         return cost;
     }
 
+    /**
+     * @param cost
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }
 
+    /**
+     * @return int
+     */
     public int getBaseSell() {
         return baseSell;
     }
 
+    /**
+     * @param baseSell
+     */
     public void setBaseSell(int baseSell) {
         this.baseSell = baseSell;
     }
 
+    /**
+     * @return double
+     */
     public double getExpYield() {
         return expYield;
     }
 
+    /**
+     * @param expYield
+     */
     public void setExpYield(int expYield) {
         this.expYield = expYield;
     }
 
+    /**
+     * @return String
+     */
     public String getDesc() {
         return desc;
     }
 
+    /**
+     * @param desc
+     */
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    
+
 }

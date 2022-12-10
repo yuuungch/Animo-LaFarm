@@ -214,84 +214,144 @@ public class Tile {
         }
     }
 
+    /**
+     * @return int
+     */
     // GETTERS AND SETTERS
 
     public int getRockState() {
         return rockState;
     }
 
+    /**
+     * @param rockState
+     */
     public void setRockState(int rockState) {
         this.rockState = rockState;
     }
 
+    /**
+     * @return int
+     */
     public int getPlowState() {
         return plowState;
     }
 
+    /**
+     * @param plowState
+     */
     public void setPlowState(int plowState) {
         this.plowState = plowState;
     }
 
+    /**
+     * @return int
+     */
     public int getSeedState() {
         return seedState;
     }
 
+    /**
+     * @param seedState
+     */
     public void setSeedState(int seedState) {
         this.seedState = seedState;
     }
 
+    /**
+     * @return boolean
+     */
     public boolean getWitherState() {
         return witherState;
     }
 
+    /**
+     * @param witherState
+     */
     public void setWitherState(boolean witherState) {
         this.witherState = witherState;
     }
 
+    /**
+     * @return int
+     */
     public int getWaterCount() {
         return waterCount;
     }
 
+    /**
+     * @param waterCount
+     */
     public void setWaterCount(int waterCount) {
         this.waterCount = waterCount;
     }
 
+    /**
+     * @return int
+     */
     public int getWateredToday() {
         return wateredToday;
     }
 
+    /**
+     * @param wateredToday
+     */
     public void setWateredToday(int wateredToday) {
         this.wateredToday = wateredToday;
     }
 
+    /**
+     * @return int
+     */
     public int getFertiCount() {
         return fertiCount;
     }
 
+    /**
+     * @param fertiCount
+     */
     public void setFertiCount(int fertiCount) {
         this.fertiCount = fertiCount;
     }
 
+    /**
+     * @return int
+     */
     public int getFertilizedToday() {
         return fertilizedToday;
     }
 
+    /**
+     * @param fertilizedToday
+     */
     public void setFertilizedToday(int fertilizedToday) {
         this.fertilizedToday = fertilizedToday;
     }
 
+    /**
+     * @return Seeds
+     */
     public Seeds getSeedInfo() {
         return seedInfo;
     }
 
+    /**
+     * @param seedInfo
+     */
     public void setSeedInfo(Seeds seedInfo) {
         this.seedInfo = seedInfo;
     }
 
+    /**
+     * @return Exp
+     */
     public Exp getPlayerExp() {
         return playerExp;
     }
 
+    /**
+     * @param playerExp
+     */
     public void setPlayerExp(Exp playerExp) {
         this.playerExp = playerExp;
     }

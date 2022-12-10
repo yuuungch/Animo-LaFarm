@@ -2437,11 +2437,18 @@ public class WindowFarmGui extends JFrame {
         this.add(panelCenter, BorderLayout.CENTER);
     }
 
+    /**
+     * @return String
+     */
     // update the player info DEBUG DOES IT UPDATE?
     public String updatePlayer() {
         return setPlayerInfo(farm.getCurrentPlayerInfo());
     }
 
+    /**
+     * @param playerInfo
+     * @return String
+     */
     // set seed inventory and player info
     public String setPlayerInfo(String playerInfo) {
         String playerINFO = "";
@@ -2450,6 +2457,9 @@ public class WindowFarmGui extends JFrame {
         return playerINFO;
     }
 
+    /**
+     * @param listener
+     */
     // add listeners to the buttons to know what the buttons are doing
     public void setActionListener(ActionListener listener) {
         btnStore.addActionListener(listener);
@@ -2462,6 +2472,9 @@ public class WindowFarmGui extends JFrame {
         btnShovel.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     // add docs listeners to texts
     public void setDocumentsListener(DocumentListener listener) {
         text.getDocument().addDocumentListener(listener);

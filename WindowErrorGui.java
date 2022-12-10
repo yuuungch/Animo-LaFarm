@@ -9,14 +9,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class WindowErrorGui extends JFrame {
-    //create buttons as we need to use it later on
-    private JButton btnTryAgain; 
+    // create buttons as we need to use it later on
+    private JButton btnTryAgain;
     private WindowAskPlowGui askGui;
     private Farm farm;
     private ArrayList<Tile> Land;
-    private PlowTool plowTool;  
+    private PlowTool plowTool;
 
-    public WindowErrorGui(ArrayList<Tile> Land, PlowTool plowTool, Farm farm){
+    public WindowErrorGui(ArrayList<Tile> Land, PlowTool plowTool, Farm farm) {
         super("Error");
 
         // this
@@ -24,46 +24,49 @@ public class WindowErrorGui extends JFrame {
         this.plowTool = plowTool;
         this.farm = farm;
 
-        //layout
-        setLayout( new BorderLayout());
+        // layout
+        setLayout(new BorderLayout());
 
-        //Set size of our window
+        // Set size of our window
         setSize(350, 200);
 
-        //add elements before visible
+        // add elements before visible
         init();
 
-        //explicityle set the visibility to true
+        // explicityle set the visibility to true
         setVisible(true);
 
-        //set resizable to false to prevent users from resizing the window
+        // set resizable to false to prevent users from resizing the window
         setResizable(false);
 
-        //set default: hide the frame, don't end the program
+        // set default: hide the frame, don't end the program
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     }
 
-    //we will layout the elements/components here
-    private void init(){
+    // we will layout the elements/components here
+    private void init() {
 
-        //center panel
+        // center panel
         JPanel panelCenter = new JPanel();
         panelCenter.setBackground(Color.LIGHT_GRAY);
 
-        //add label to panel
+        // add label to panel
         JLabel lblAsk = new JLabel("Error! Invalid answer!\n Please try again");
         lblAsk.setForeground(Color.BLACK);
 
-        //add label to panel
+        // add label to panel
         panelCenter.add(lblAsk);
 
-        //add namepanel to center panel
+        // add namepanel to center panel
         this.add(panelCenter, BorderLayout.CENTER);
     }
 
-    //add listeners to the buttons to know what the buttons are doing
-    public void setActionListener(ActionListener listener){
+    /**
+     * @param listener
+     */
+    // add listeners to the buttons to know what the buttons are doing
+    public void setActionListener(ActionListener listener) {
         btnTryAgain.addActionListener(listener);
     }
 }

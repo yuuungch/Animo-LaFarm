@@ -60,6 +60,10 @@ public class WindowStoreGui extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * @param array
+     * @param x
+     */
     // store elements
     private void storeElements(ArrayList<Tile> array, int x) {
         // south panel
@@ -176,6 +180,9 @@ public class WindowStoreGui extends JFrame {
         this.add(panelCenter, BorderLayout.CENTER);
     }
 
+    /**
+     * @param listener
+     */
     // add listeners to the buttons to know what the buttons are doing
     public void setActionListener(ActionListener listener) {
         btnBuy.addActionListener(listener);
@@ -183,30 +190,49 @@ public class WindowStoreGui extends JFrame {
         btnNext.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     // add docs listeners to texts
     public void setDocumentsListener(DocumentListener listener) {
         taName.getDocument().addDocumentListener(listener);
         taDesc.getDocument().addDocumentListener(listener);
     }
 
+    /**
+     * @param currNum
+     * @param numSeeds
+     */
     // create method to show x of x
     public void setSeedNum(int currNum, int numSeeds) {
         lblStore.setText("Seed (Seed " + currNum + " of  " + numSeeds + ")");
     }
 
+    /**
+     * @return String
+     */
     public String getSeedName() {
         return taName.getText();
     }
 
+    /**
+     * @return String
+     */
     public String getSeedDesc() {
         return taDesc.getText();
     }
 
+    /**
+     * @param name
+     */
     // set seed name
     public void setSeedName(String name) {
         taName.setText(name);
     }
 
+    /**
+     * @param desc
+     */
     // set seed desc
     public void setSeedDesc(String desc) {
         taDesc.setText(desc);

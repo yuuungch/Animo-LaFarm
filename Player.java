@@ -83,42 +83,72 @@ public class Player {
         WindowResultGui result = new WindowResultGui(output);
     }
 
+    /**
+     * @return ArrayList<Integer>
+     */
     public ArrayList<Integer> getSeedInv() {
         return seedInv;
     }
 
+    /**
+     * @param seedInv
+     */
     public void setSeedInv(ArrayList<Integer> seedInv) {
         this.seedInv = seedInv;
     }
 
+    /**
+     * @return double
+     */
     public double getOcoins() {
         return Ocoins;
     }
 
+    /**
+     * @param ocoins
+     */
     public void setOcoins(double ocoins) {
         Ocoins = ocoins;
     }
 
+    /**
+     * @return Seeds
+     */
     public Seeds getSeedData() {
         return seedData;
     }
 
+    /**
+     * @param seedData
+     */
     public void setSeedData(Seeds seedData) {
         this.seedData = seedData;
     }
 
+    /**
+     * @return Exp
+     */
     public Exp getExpData() {
         return expData;
     }
 
+    /**
+     * @param expData
+     */
     public void setExpData(Exp expData) {
         this.expData = expData;
     }
 
+    /**
+     * @return String
+     */
     public String getOutput() {
         return output;
     }
 
+    /**
+     * @return String
+     */
     public String getOutput2() {
         return output2;
     }

@@ -29,6 +29,9 @@ public class ControllerStore implements ActionListener, DocumentListener {
         storeGui.setSeedDesc(store.getCurrentSeedDesc());
     }
 
+    /**
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
@@ -44,18 +47,27 @@ public class ControllerStore implements ActionListener, DocumentListener {
 
     }
 
+    /**
+     * @param e
+     */
     @Override
     public void changedUpdate(DocumentEvent e) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * @param e
+     */
     @Override
     public void insertUpdate(DocumentEvent e) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * @param e
+     */
     @Override
     public void removeUpdate(DocumentEvent e) {
         // TODO Auto-generated method stub

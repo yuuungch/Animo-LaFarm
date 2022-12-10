@@ -157,64 +157,109 @@ public class Exp {
         }
     }
 
+    /**
+     * @return double
+     */
     // GETTERS AND SETTERS
 
     public double getExp() {
         return exp;
     }
 
+    /**
+     * @param exp
+     */
     public void setExp(double exp) {
         this.exp = exp;
     }
 
+    /**
+     * @return String
+     */
     public String getFarmerType() {
         return farmerType;
     }
 
+    /**
+     * @param farmerType
+     */
     public void setFarmerType(String farmerType) {
         this.farmerType = farmerType;
     }
 
+    /**
+     * @return int
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * @param level
+     */
     public void setLevel(int level) {
         this.level = level;
     }
 
+    /**
+     * @return int
+     */
     public int getEarningBonus() {
         return earningBonus;
     }
 
+    /**
+     * @param earningBonus
+     */
     public void setEarningBonus(int earningBonus) {
         this.earningBonus = earningBonus;
     }
 
+    /**
+     * @return int
+     */
     public int getCostReduction() {
         return costReduction;
     }
 
+    /**
+     * @param costReduction
+     */
     public void setCostReduction(int costReduction) {
         this.costReduction = costReduction;
     }
 
+    /**
+     * @return int
+     */
     public int getWaterBonus() {
         return waterBonus;
     }
 
+    /**
+     * @param waterBonus
+     */
     public void setWaterBonus(int waterBonus) {
         this.waterBonus = waterBonus;
     }
 
+    /**
+     * @return int
+     */
     public int getFertiBonus() {
         return fertiBonus;
     }
 
+    /**
+     * @param fertiBonus
+     */
     public void setFertiBonus(int fertiBonus) {
         this.fertiBonus = fertiBonus;
     }
 
+    /**
+     * @return double
+     */
     public double getRegcap() {
         return regcap;
     }

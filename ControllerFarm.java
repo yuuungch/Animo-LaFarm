@@ -13,6 +13,9 @@ public class ControllerFarm {
         this.plowTool = plowTool;
     }
 
+    /**
+     * @param tileNum
+     */
     public void Plow(int tileNum) {
         if (Land.get(tileNum).getPlowState() == 0 || Land.get(tileNum).getPlowState() == 1) {
             plowTool.Plow(Land, tileNum);

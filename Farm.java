@@ -33,6 +33,10 @@ public class Farm {
         }
     }
 
+    /**
+     * @param tileNum
+     * @param seedNum
+     */
     public void plant(int tileNum, int seedNum) {
         Seeds seed = new Seeds(0);
         seed.Generate(seedNum);
@@ -45,6 +49,11 @@ public class Farm {
         }
     }
 
+    /**
+     * @param Land
+     * @param tileNum
+     * @param player
+     */
     public void harvest(ArrayList<Tile> Land, int tileNum, Player player) {
         String output = "";
         if (Land.get(tileNum).getSeedState() != 0 && Land.get(tileNum).getSeedInfo().getDaysLeft() == 0) {
@@ -84,6 +93,9 @@ public class Farm {
         WindowResultGui nextDay = new WindowResultGui(output);
     }
 
+    /**
+     * @param tileNum
+     */
     public void checkTile(int tileNum) {
         if (tileNum >= 0 && tileNum <= 49) {
 
@@ -103,6 +115,9 @@ public class Farm {
         }
     }
 
+    /**
+     * @return String
+     */
     public String getCurrentPlayerInfo() {
         // generate info
         playerInfo = "---------------------------------" + "\nObjectcoins Available: "

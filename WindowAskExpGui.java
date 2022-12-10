@@ -118,20 +118,32 @@ public class WindowAskExpGui extends JFrame {
         this.add(panelCenter, BorderLayout.CENTER);
     }
 
+    /**
+     * @param listener
+     */
     // add listeners to the buttons to know what the buttons are doing
     public void setActionListener(ActionListener listener) {
         btnConfirm.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     // add docs listeners to texts
     public void setDocumentsListener(DocumentListener listener) {
         tfUserInput.getDocument().addDocumentListener(listener);
     }
 
+    /**
+     * @return String
+     */
     public String getUserInput() {
         return tfUserInput.getText();
     }
 
+    /**
+     * @return int
+     */
     public int getChoice() {
         return intUserInput;
     }
