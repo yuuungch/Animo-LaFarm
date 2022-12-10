@@ -14,6 +14,8 @@ public class ControllerFarm {
     }
 
     /**
+     * Redirected method for Plow function
+     * 
      * @param tileNum
      */
     public void Plow(int tileNum) {

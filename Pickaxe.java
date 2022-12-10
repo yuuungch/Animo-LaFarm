@@ -4,9 +4,11 @@ public class Pickaxe {
     private String output;
 
     /**
-     * @param array
-     * @param x
-     * @param p
+     * Method to remove rocks from tiles
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @param p     Player object
      */
     public void RemoveRock(ArrayList<Tile> array, int x, Player p) {
 

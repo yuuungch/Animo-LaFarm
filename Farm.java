@@ -10,7 +10,6 @@ public class Farm {
     private boolean EndOfGame;
     private boolean witherCheck;
     private String output;
-    // private ControllerFarm farmControl;
 
     public Farm(ArrayList<Tile> Land, Player player, Play play) {
         this.Land = Land;
@@ -21,6 +20,10 @@ public class Farm {
         witherCheck = false;
     }
 
+    /**
+     * Method to buy seeds
+     * 
+     */
     public void buySeeds() {
         player.BuySeeds();
         // check if player has no more money, run out of seeds, or no more active crops
@@ -34,8 +37,10 @@ public class Farm {
     }
 
     /**
-     * @param tileNum
-     * @param seedNum
+     * Method to plant a new seed onto a tile
+     * 
+     * @param tileNum Tile Number
+     * @param seedNum Seed number
      */
     public void plant(int tileNum, int seedNum) {
         Seeds seed = new Seeds(0);
@@ -50,9 +55,11 @@ public class Farm {
     }
 
     /**
-     * @param Land
-     * @param tileNum
-     * @param player
+     * Method to harvest plants from tiles
+     * 
+     * @param Land    ArrayList of Tiles
+     * @param tileNum Tile number
+     * @param player  Player object
      */
     public void harvest(ArrayList<Tile> Land, int tileNum, Player player) {
         String output = "";
@@ -67,6 +74,10 @@ public class Farm {
         WindowResultGui harvestWindow = new WindowResultGui(output);
     }
 
+    /**
+     * Method to Validate and change player's rank up and exp data, respectively
+     * 
+     */
     public void rankUp() {
         player.getExpData().Registration(player);
         player.getSeedData().ExpChange(player.getExpData().getEarningBonus(),
@@ -74,6 +85,11 @@ public class Farm {
                 player.getExpData().getFertiBonus());
     }
 
+    /**
+     * Method to add one day to current day, thereby reseting certain stats and
+     * decreasing days left for plant
+     * 
+     */
     public void nextDay() {
         day++;
 
@@ -94,7 +110,9 @@ public class Farm {
     }
 
     /**
-     * @param tileNum
+     * Default Tile Information Checker
+     * 
+     * @param tileNum Tile Number
      */
     public void checkTile(int tileNum) {
         if (tileNum >= 0 && tileNum <= 49) {
@@ -116,6 +134,8 @@ public class Farm {
     }
 
     /**
+     * Method to display Current Player Information
+     * 
      * @return String
      */
     public String getCurrentPlayerInfo() {

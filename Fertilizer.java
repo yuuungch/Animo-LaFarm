@@ -4,7 +4,7 @@ public class Fertilizer {
     private String output;
 
     /**
-     * Method to Fertilize a Tile (to be moved to Fertilize class)
+     * Method to Fertilize a Tile
      * 
      * @param array ArrayList of Tiles
      * @param x     Tile Number
