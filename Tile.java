@@ -1,60 +1,222 @@
 import java.util.ArrayList;
 import java.util.Random;
-
-// import java.util.Scanner;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Tile {
-    private int plowState; // 0 = for no rocks and unplowed,
-                           // 1 = for no rocks and plowed,
-                           // 2 = for with rocks
-    private int seedState; // 0 = unplanted, 1 = planted, 2 = withered
-    private int seedPlanted; //(root crop) 1 = Turnip, 2 = Carrot, 3 = Potato, 4 = Rose
-                             // (flower)   5 = Turnip, 6 = Sunflower
-                             //(fruit tree)7 = Mango,  8 = Apple
-                             //0 = no plant
-    private int waterState; 
-    private int fertilizedState;
-    private int plantDate; 
-    private int produce;
+    private int rockState; // 0 with rock, 1 no rock
+    private int plowState; // 0 for unplowed, 1 for plowed
+    private int seedState; // 0 unplanted, 1 to 8 for types of seed, 9 if withered
+    private boolean witherState; // false unwithered, true withered
+    private int waterCount; // counts number of times tile has been watered
+    private int wateredToday; // 0 if not yet, 1 if done already.
+    private int fertiCount; // 0 if not fertilized, 1 if fertilized
+    private int fertilizedToday; // 0 if not yet, 1 if done already.
+    private Seeds seedInfo; // contains information regarding which seed
+    private Exp playerExp;
+    private String output;
+    private String outString;
+    private String finalOutput;
 
-    public Tile(int plowState, int seedState, int seedPlanted, int waterState, int fertilizedState, int plantDate, int produce) {
-        this.plowState = plowState;
-        this.seedState = seedState;
-        this.seedPlanted = seedPlanted;
-        this.waterState = waterState;
-        this.fertilizedState = fertilizedState;
-        this.plantDate = plantDate;
-        this.produce = produce;
+    public Tile(Seeds seedInfo, Exp playerExp) {
+        rockState = 1;
+        plowState = 0;
+        seedState = 0;
+        witherState = false;
+        waterCount = 0;
+        wateredToday = 0;
+        fertiCount = 0;
+        fertilizedToday = 0;
+        this.seedInfo = seedInfo;
+        this.playerExp = playerExp;
     }
 
-    public int createProduce(int seed){
-        if (seed == 1 || seed == 2) {
-            int max = 2;
-            int min = 1;
-            Random randomNum = new Random();
-            produce = min + randomNum.nextInt(max);
-        } else if (seed == 3) {
-            int max = 10;
-            int min = 1;
-            Random randomNum = new Random();
-            produce = min + randomNum.nextInt(max);
-        } else if (seed == 4|| seed == 5 || seed == 6) {
-            produce = 1;
-        } else if (seed == 7) {
-            int max = 15;
-            int min = 5;
-            Random randomNum = new Random();
-            produce = min + randomNum.nextInt(max);
-        } else if (seed == 8) {
-            int max = 15;
-            int min = 10;
-            Random randomNum = new Random();
-            produce = min + randomNum.nextInt(max);
+    /**
+     * Method to establish tile slots that contains rocks
+     * 
+     * @param array ArrayList of Tiles
+     */
+    public void SetRocks(ArrayList<Tile> array) {
+        File filename = new File("Rocks.txt");
+        try (Scanner file = new Scanner(filename)) {
+            int index = file.nextInt();
+            array.get(index).setRockState(1);
+            System.out.println(index);
+            while (file.hasNextInt()) {
+                index = file.nextInt();
+                array.get(index).setRockState(1);
+                System.out.println(index);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error. Filename " + filename + " not found!");
+            e.printStackTrace();
         }
-        return produce;
+
     }
 
-    public Integer getPlowState() {
+    /**
+     * Method for planting a seed
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @param y     Seed Type
+     */
+    public void Plant(ArrayList<Tile> array, int x, int y) {
+
+        boolean treePos = true;
+
+        if (x == 7 || x == 8) {
+            treePos = false;
+            treePos = TreeCheck(array, x);
+        }
+
+        if (array.get(x).plowState == 0) { // UNPLOWED
+            output = "Cannot plant seed on chosen tile. Please plow the tile first.";
+        } else if (!treePos) {
+            output = "Cannot plant tree seed on chosen tile.";
+        } else if (array.get(x).seedState == 0 && array.get(x).plowState == 1 && treePos) { // SUCCESS
+            array.get(x).setSeedState(y);
+            output = array.get(x).seedInfo.getName() + " seed planted Successfully! ";
+        } else if (array.get(x).seedState != 0 && array.get(x).plowState == 1) { // ALREADY HAS A SEED
+            output = "Sorry. This tile already has a seed planted. ";
+        } else if (array.get(x).seedState == 9) { // WITHERED PLANT PRESENT
+            output =
+                    "Sorry. There is still a withered plant present here in this tile. Please remove it first.";
+        }
+        WindowOutputGui outputGui = new WindowOutputGui(output);
+    }
+
+    /**
+     * Checks for surrounding tiles (for tree seeds only)
+     * 
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @return true if tree is plantable
+     * @return false if tree is not plantable
+     */
+    public boolean TreeCheck(ArrayList<Tile> array, int x) {
+        boolean value = false;
+        if (x > 9 && x < 40) { // Top and bottom check
+            if (x % 10 != 0 && x + 1 % 10 != 0) { // left and right check
+                if (array.get(x - 11).seedState == 0 && array.get(x - 10).seedState == 0
+                        && array.get(x - 9).seedState == 0) { // top row check
+                    if (array.get(x - 1).seedState == 0 && array.get(x + 1).seedState == 0) { // mid row check
+                        if (array.get(x + 9).seedState == 0 && array.get(x + 10).seedState == 0
+                                && array.get(x + 11).seedState == 0) { // bottom row check
+                            value = true;
+                        }
+                    }
+                }
+            }
+        }
+        return value;
+    }
+
+    /**
+     * Method that regularly checks for a withered plant (This method stays here in
+     * Tile, DO NOT MOVE TO SHOVEL)
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     */
+    public void WitherCheck(ArrayList<Tile> array, int x) {
+        if ((array.get(x).seedInfo.getDaysLeft() <= 0 && array.get(x).getWateredToday() == 0
+                && array.get(x).getSeedState() != 0) &&
+                (array.get(x).getWateredToday() == 0 && array.get(x).getSeedState() != 0)) {
+            System.out.println("Oh no! The " + array.get(x).seedInfo.getName() + " in Tile " + x + " has withered!");
+            array.get(x).setWitherState(true);
+            array.get(x).setSeedState(9);
+            array.get(x).setWaterCount(0);
+            array.get(x).setFertiCount(0);
+            array.get(x).seedInfo.Generate(0);
+        }
+    }
+
+    /**
+     * Method to harvest a plant and earn money
+     * 
+     * @param array ArrayList of Tiles
+     * @param x     Tile Number
+     * @param p     Player class; used to directly interact with the Ocoins variable
+     *              of the player
+     */
+    public void Harvest(ArrayList<Tile> array, int x, Player p) {
+        Random rand = new Random(); // For plant produce
+
+        int produceNum; // Actual variable for produce
+        double HarvestTotal, WaterBonusValue, FertilizerBonusValue, FinalHarvestPrice;
+        if (array.get(x).seedInfo.getType() > 0 && array.get(x).seedInfo.getType() < 9) { // ed ranges from
+                                                                                          // available ones
+            // context rand.nextInt(origin, bound); origin is base, bound is peak minus 1
+            // EX.
+            // if origin = 7 and bound = 10
+            // then rand will only produce pseudorandom numbers from 7 to 9
+            produceNum = rand.nextInt(array.get(x).seedInfo.getProduceMin(), array.get(x).seedInfo.getProduceMax() + 1);
+
+            HarvestTotal = produceNum
+                    * (array.get(x).seedInfo.getBaseSell() + array.get(x).playerExp.getEarningBonus());
+
+            WaterBonusValue = HarvestTotal * 0.2 * (array.get(x).getWaterCount() - 1);
+
+            FertilizerBonusValue = HarvestTotal * 0.5 * (array.get(x).getFertiCount());
+
+            FinalHarvestPrice = HarvestTotal + WaterBonusValue + FertilizerBonusValue;
+
+            output = "Yay! you have harvested " + produceNum + " pieces of " + seedInfo.getName() + ".";
+            WindowOutputGui outputGui = new WindowOutputGui(output);
+
+            // PROFIT BREAKDOWN
+
+            // FLOWER MULTIPLIER BONUS
+            if (array.get(x).seedInfo.getType() >= 4 && array.get(x).seedInfo.getType() <= 6) {
+                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
+                            "Total Number of Harvest: " + produceNum + 
+                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                            "\nWater Bonus: " + WaterBonusValue +
+                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                            "\nFertilizer Bonus: " + FertilizerBonusValue +
+                            "Flower Multiplier Bonus: 1.1";
+                            FinalHarvestPrice *= 1.1;
+            } else {
+                outString = "Profit Breakdown:\n" + "-----------------------\n" + 
+                            "Total Number of Harvest: " + produceNum + 
+                            "\nPrice for each " + seedInfo.getName() + ": " + seedInfo.getBaseSell() +
+                            "\nTimes Plant was Watered: " + array.get(x).getWaterCount() +
+                            "\nWater Bonus: " + WaterBonusValue +
+                            "\nTimes Plant was Fertilized: " + array.get(x).getFertiCount() +
+                            "\nFertilizer Bonus: " + FertilizerBonusValue;                                  
+            }
+            p.setOcoins(p.getOcoins() + FinalHarvestPrice);
+            finalOutput = outString + "\nTotal Profit: " + FinalHarvestPrice + // FINAL PROFIT 
+                                      "\n-------------------------" +
+                                      "\nAdded " + FinalHarvestPrice + " to your inventory. Total of " + 
+                                      p.getOcoins() + " Objectcoins in inventory.";
+            WindowResultGui resultGui = new WindowResultGui(finalOutput);
+            playerExp.GainExp(array.get(x).seedInfo.getExpYield() * produceNum, array.get(x).playerExp);
+
+            // RESET TO DEFAULT
+            array.get(x).plowState = 0;
+            array.get(x).seedState = 0;
+            array.get(x).waterCount = 0;
+            array.get(x).fertiCount = 0;
+            array.get(x).seedInfo.Generate(0);
+        }
+    }
+
+    // GETTERS AND SETTERS
+
+    public int getRockState() {
+        return rockState;
+    }
+
+    public void setRockState(int rockState) {
+        this.rockState = rockState;
+    }
+
+    public int getPlowState() {
         return plowState;
     }
 
@@ -70,40 +232,60 @@ public class Tile {
         this.seedState = seedState;
     }
 
-    public int getSeedPlanted() {
-        return seedPlanted;
+    public boolean getWitherState() {
+        return witherState;
     }
 
-    public void setSeedPlanted(int seedPlanted) {
-        this.seedPlanted = seedPlanted;
+    public void setWitherState(boolean witherState) {
+        this.witherState = witherState;
     }
 
-    public int getWaterState() {
-        return waterState;
+    public int getWaterCount() {
+        return waterCount;
     }
 
-    public void setWaterState(int waterState) {
-        this.waterState = waterState;
+    public void setWaterCount(int waterCount) {
+        this.waterCount = waterCount;
     }
 
-    public int getFertilizedState() {
-        return fertilizedState;
+    public int getWateredToday() {
+        return wateredToday;
     }
 
-    public void setFertilizedState(int fertilizedState) {
-        this.fertilizedState = fertilizedState;
+    public void setWateredToday(int wateredToday) {
+        this.wateredToday = wateredToday;
     }
 
-    public int getPlantDate() {
-        return plantDate;
+    public int getFertiCount() {
+        return fertiCount;
     }
 
-    public void setPlantDate(int plantDate) {
-        this.plantDate = plantDate;
+    public void setFertiCount(int fertiCount) {
+        this.fertiCount = fertiCount;
     }
 
-    public void setProduce(int produce) {
-        this.produce = produce;
+    public int getFertilizedToday() {
+        return fertilizedToday;
     }
-    
+
+    public void setFertilizedToday(int fertilizedToday) {
+        this.fertilizedToday = fertilizedToday;
+    }
+
+    public Seeds getSeedInfo() {
+        return seedInfo;
+    }
+
+    public void setSeedInfo(Seeds seedInfo) {
+        this.seedInfo = seedInfo;
+    }
+
+    public Exp getPlayerExp() {
+        return playerExp;
+    }
+
+    public void setPlayerExp(Exp playerExp) {
+        this.playerExp = playerExp;
+    }
+
 }

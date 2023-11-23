@@ -1,20 +1,26 @@
 import java.util.ArrayList;
 
 public class Play {
-    public void playGame(){
-         //attributes
-        ArrayList<Integer> seedInv = new ArrayList<Integer>();
-        Seeds seedData = new Seeds();
-        Exp XP = new Exp(0, "Farmer", 0, 0, 0, 0, 0);
-        Player player = new Player(seedInv, seedData, XP);
-        Tile tile = new Tile(0, 0, 0, 0, 0, 0, 0);
+    public void playGame() {
         Play play = new Play();
-        PlowTool plowingTool = new PlowTool(XP);
-        WateringCan wateringCan = new WateringCan(XP);
-        Fertilizer fertilizerObj = new Fertilizer(player, XP);
-        ShovelTool shovelTool = new ShovelTool(player, XP);
-        Farm farm = new Farm(player, tile, seedData, play, plowingTool, wateringCan, fertilizerObj, XP, shovelTool);
-        farm.Menu();
+        Seeds seedInfo = new Seeds(0);
+        Store store = new Store(8, seedInfo);
+        Player player = new Player(store);
+        Tile tile = new Tile(seedInfo, player.getExpData());
+        ArrayList<Tile> Land = new ArrayList<Tile>();
+        player.InitializeInventory(); // Initialize Inventory
+        for (int i = 0; i < 50; i++) {
+            Land.add(i, tile);
+        }
+        Farm farm = new Farm(Land, player, tile, play);
+        PlowTool plowTool = new PlowTool();
+        WateringCan wateringCan = new WateringCan();
+        Fertilizer fertilizer = new Fertilizer();
+        ShovelTool shovelTool = new ShovelTool();
+        Pickaxe pickaxe = new Pickaxe();
+        WindowFarmGui farmGui = new WindowFarmGui(farm, seedInfo, Land, store, player, plowTool,
+                                                  wateringCan, fertilizer, shovelTool, pickaxe);
+
+        // farm.Menu();
     }
-   
 }
